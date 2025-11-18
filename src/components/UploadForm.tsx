@@ -1,8 +1,7 @@
-// UploadForm component for teachers
 import { useState, useEffect } from 'react';
 import { uploadFile } from '../lib/storage';
 import { createNote } from '../lib/firestore';
-import { auth } from '../lib/firebase';
+import { getAuthInstance } from '../lib/firebase';
 import { getCurrentUserData } from '../lib/auth';
 import SubjectDropdown from './SubjectDropdown';
 
@@ -46,7 +45,8 @@ export default function UploadForm() {
       }
 
       // Save note metadata to Firestore
-      const user = auth.currentUser;
+      const auth = await getAuthInstance();
+      const user = auth?.currentUser;
       const noteResult = await createNote({
         title: formData.title,
         subject: formData.subject,

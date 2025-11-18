@@ -1,4 +1,3 @@
-// Firestore helper functions
 import {
   collection,
   doc,
@@ -11,13 +10,12 @@ import {
   orderBy,
   Timestamp
 } from 'firebase/firestore';
-import { db } from './firebase';
+import { getDbInstance } from './firebase';
 
-/**
- * Get all questions/doubts
- */
 export async function getQuestions(filters = {}) {
   try {
+    const db = await getDbInstance();
+    if (!db) return [];
     let q = query(collection(db, 'questions'), orderBy('createdAt', 'desc'));
     
     if (filters.subject) {
@@ -40,11 +38,10 @@ export async function getQuestions(filters = {}) {
   }
 }
 
-/**
- * Get a single question by ID
- */
 export async function getQuestion(questionId) {
   try {
+    const db = await getDbInstance();
+    if (!db) return null;
     const docRef = doc(db, 'questions', questionId);
     const docSnap = await getDoc(docRef);
     
@@ -62,11 +59,10 @@ export async function getQuestion(questionId) {
   }
 }
 
-/**
- * Create a new question
- */
 export async function createQuestion(questionData) {
   try {
+    const db = await getDbInstance();
+    if (!db) return { success: false, error: 'Firestore is not initialized' };
     const docRef = await addDoc(collection(db, 'questions'), {
       ...questionData,
       createdAt: Timestamp.now(),
@@ -79,11 +75,10 @@ export async function createQuestion(questionData) {
   }
 }
 
-/**
- * Get replies for a question
- */
 export async function getReplies(questionId) {
   try {
+    const db = await getDbInstance();
+    if (!db) return [];
     const q = query(
       collection(db, 'questions', questionId, 'replies'),
       orderBy('timestamp', 'desc')
@@ -100,11 +95,10 @@ export async function getReplies(questionId) {
   }
 }
 
-/**
- * Add a reply to a question
- */
 export async function addReply(questionId, replyData) {
   try {
+    const db = await getDbInstance();
+    if (!db) return { success: false, error: 'Firestore is not initialized' };
     const docRef = await addDoc(
       collection(db, 'questions', questionId, 'replies'),
       {
@@ -126,11 +120,10 @@ export async function addReply(questionId, replyData) {
   }
 }
 
-/**
- * Verify a reply (teacher only)
- */
 export async function verifyReply(questionId, replyId) {
   try {
+    const db = await getDbInstance();
+    if (!db) return { success: false, error: 'Firestore is not initialized' };
     await updateDoc(
       doc(db, 'questions', questionId, 'replies', replyId),
       { isTeacherVerified: true }
@@ -142,11 +135,10 @@ export async function verifyReply(questionId, replyId) {
   }
 }
 
-/**
- * Get all notes/resources
- */
 export async function getNotes(filters = {}) {
   try {
+    const db = await getDbInstance();
+    if (!db) return [];
     let q = query(collection(db, 'notes'), orderBy('createdAt', 'desc'));
     
     if (filters.subject) {
@@ -165,11 +157,10 @@ export async function getNotes(filters = {}) {
   }
 }
 
-/**
- * Create a new note/resource
- */
 export async function createNote(noteData) {
   try {
+    const db = await getDbInstance();
+    if (!db) return { success: false, error: 'Firestore is not initialized' };
     const docRef = await addDoc(collection(db, 'notes'), {
       ...noteData,
       createdAt: Timestamp.now()
@@ -181,9 +172,6 @@ export async function createNote(noteData) {
   }
 }
 
-/**
- * Check if an email is in the allowed users list
- */
 export async function isEmailAllowed(email) {
   try {
     const emailLower = email.toLowerCase().trim();
@@ -199,13 +187,9 @@ export async function isEmailAllowed(email) {
   }
 }
 
-/**
- * Add a user to the allowed users list
- */
 export async function addAllowedUser(email, name, role = 'student') {
   try {
     const emailLower = email.toLowerCase().trim();
-    // Check if already exists
     const q = query(
       collection(db, 'allowedUsers'),
       where('email', '==', emailLower)
@@ -229,9 +213,6 @@ export async function addAllowedUser(email, name, role = 'student') {
   }
 }
 
-/**
- * Get all allowed users
- */
 export async function getAllowedUsers() {
   try {
     const q = query(collection(db, 'allowedUsers'), orderBy('createdAt', 'desc'));

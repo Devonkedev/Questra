@@ -60,7 +60,29 @@ async function importUsers() {
     process.exit(1);
   }
 
-  const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+  // Parse CSV line handling quoted fields
+  function parseCSVLine(line) {
+    const values = [];
+    let current = '';
+    let inQuotes = false;
+    
+    for (let i = 0; i < line.length; i++) {
+      const char = line[i];
+      
+      if (char === '"') {
+        inQuotes = !inQuotes;
+      } else if (char === ',' && !inQuotes) {
+        values.push(current.trim());
+        current = '';
+      } else {
+        current += char;
+      }
+    }
+    values.push(current.trim()); // Add the last value
+    return values;
+  }
+
+  const headers = parseCSVLine(lines[0]).map(h => h.trim().toLowerCase());
   const emailIndex = headers.indexOf('email');
   const nameIndex = headers.indexOf('name');
   const roleIndex = headers.indexOf('role');
@@ -77,7 +99,7 @@ async function importUsers() {
   console.log('📤 Starting import...\n');
 
   for (let i = 1; i < lines.length; i++) {
-    const values = lines[i].split(',').map(v => v.trim());
+    const values = parseCSVLine(lines[i]);
     
     if (values.length < emailIndex + 1) {
       console.log(`⚠️  Skipping line ${i + 1}: Invalid format`);
@@ -85,9 +107,10 @@ async function importUsers() {
       continue;
     }
 
-    const email = values[emailIndex].toLowerCase().trim();
-    const name = nameIndex !== -1 ? values[nameIndex] : '';
-    const role = roleIndex !== -1 ? values[roleIndex] : 'student';
+    // Remove quotes from values if present
+    const email = values[emailIndex].replace(/^"|"$/g, '').toLowerCase().trim();
+    const name = nameIndex !== -1 ? values[nameIndex].replace(/^"|"$/g, '').trim() : '';
+    const role = roleIndex !== -1 ? values[roleIndex].replace(/^"|"$/g, '').trim() : 'student';
 
     if (!email || !email.includes('@')) {
       console.log(`⚠️  Skipping line ${i + 1}: Invalid email "${email}"`);

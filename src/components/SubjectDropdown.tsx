@@ -1,4 +1,3 @@
-// SubjectDropdown component
 import { useState } from 'react';
 
 interface SubjectDropdownProps {

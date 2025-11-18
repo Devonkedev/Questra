@@ -1,9 +1,8 @@
-// AskDoubtForm component
 import { useState } from 'react';
 import { createQuestion } from '../lib/firestore';
 import { uploadFiles } from '../lib/storage';
 import SubjectDropdown from './SubjectDropdown';
-import { auth } from '../lib/firebase';
+import { getAuthInstance } from '../lib/firebase';
 
 const topics = {
   Physics: ['Mechanics', 'Thermodynamics', 'Optics', 'Electromagnetism', 'Modern Physics'],
@@ -45,7 +44,8 @@ export default function AskDoubtForm() {
       }
 
       // Get current user
-      const user = auth.currentUser;
+      const authInstance = await getAuthInstance();
+      const user = authInstance?.currentUser;
       const askedBy = formData.isAnonymous ? 'anonymous' : (user?.uid || 'anonymous');
 
       // Create question

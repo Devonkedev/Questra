@@ -1,7 +1,5 @@
-// TeacherDashboard component
 import { useState, useEffect } from 'react';
 import { getQuestions, verifyReply } from '../lib/firestore';
-import { auth } from '../lib/firebase';
 import SubjectDropdown from './SubjectDropdown';
 
 interface Question {

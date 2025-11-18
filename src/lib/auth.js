@@ -1,34 +1,50 @@
-// Authentication helper functions
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut,
-  onAuthStateChanged
+  onAuthStateChanged,
+  sendPasswordResetEmail,
+  sendEmailVerification,
+  reload
 } from 'firebase/auth';
-import { doc, getDoc, setDoc, collection, query, where, getDocs } from 'firebase/firestore';
-import { auth, db } from './firebase';
-import { isEmailAllowed } from './firestore.js';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { getAuthInstance, getDbInstance } from './firebase';
+import { isEmailAllowed, getAllowedUserData } from './allowed-users.js';
 
-/**
- * Sign in with email and password
- */
 export async function signIn(email, password) {
   try {
+    const auth = await getAuthInstance();
+    
+    if (!auth) {
+      return { success: false, error: 'Firebase Auth is not initialized. Please refresh the page and try again.' };
+    }
+    
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    return { success: true, user: userCredential.user };
+    const user = userCredential.user;
+    const emailVerified = user.emailVerified;
+    
+    return { 
+      success: true, 
+      user,
+      emailVerified 
+    };
   } catch (error) {
+    console.error('Sign in error:', error);
     return { success: false, error: error.message };
   }
 }
 
-/**
- * Sign up with email and password
- * Only allows signup if email is in the allowed users list
- */
 export async function signUp(email, password, name, role = 'student', subjects = []) {
   try {
-    // Check if email is in allowed list
-    const isAllowed = await isEmailAllowed(email);
+    const auth = await getAuthInstance();
+    const db = await getDbInstance();
+    
+    if (!auth) {
+      console.error('Auth is null, Firebase may not be initialized');
+      return { success: false, error: 'Firebase Auth is not initialized. Please refresh the page and try again.' };
+    }
+    
+    const isAllowed = isEmailAllowed(email);
     
     if (!isAllowed) {
       return { 
@@ -40,41 +56,47 @@ export async function signUp(email, password, name, role = 'student', subjects =
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
     
-    // Get the allowed user data to get the correct role
-    const emailLower = email.toLowerCase().trim();
-    const q = query(collection(db, 'allowedUsers'), where('email', '==', emailLower));
-    const querySnapshot = await getDocs(q);
+    const allowedUserData = getAllowedUserData(email);
     
-    let allowedUserData = null;
-    if (!querySnapshot.empty) {
-      allowedUserData = querySnapshot.docs[0].data();
-      // Use role from allowed list if it exists
+    if (allowedUserData) {
       if (allowedUserData.role) {
         role = allowedUserData.role;
       }
+      if (allowedUserData.name) {
+        name = allowedUserData.name;
+      }
     }
     
-    // Create user document in Firestore
-    await setDoc(doc(db, 'users', user.uid), {
-      uid: user.uid,
-      name: allowedUserData?.name || name,
-      role,
-      subjects,
-      email,
-      createdAt: new Date()
-    });
+    try {
+      await sendEmailVerification(user);
+    } catch (error) {
+      console.error('Error sending verification email:', error);
+    }
     
-    return { success: true, user };
+    if (db) {
+      await setDoc(doc(db, 'users', user.uid), {
+        uid: user.uid,
+        name,
+        role,
+        subjects,
+        email,
+        emailVerified: false,
+        createdAt: new Date()
+      });
+    }
+    
+    return { success: true, user, emailVerificationSent: true };
   } catch (error) {
     return { success: false, error: error.message };
   }
 }
 
-/**
- * Sign out
- */
 export async function signOutUser() {
   try {
+    const auth = await getAuthInstance();
+    if (!auth) {
+      return { success: false, error: 'Firebase Auth is not initialized.' };
+    }
     await signOut(auth);
     return { success: true };
   } catch (error) {
@@ -82,14 +104,16 @@ export async function signOutUser() {
   }
 }
 
-/**
- * Get current user data from Firestore
- */
 export async function getCurrentUserData() {
+  const auth = await getAuthInstance();
+  const db = await getDbInstance();
+  
+  if (!auth) return null;
   const user = auth.currentUser;
   if (!user) return null;
   
   try {
+    if (!db) return null;
     const userDoc = await getDoc(doc(db, 'users', user.uid));
     if (userDoc.exists()) {
       return { uid: user.uid, ...userDoc.data() };
@@ -101,10 +125,58 @@ export async function getCurrentUserData() {
   }
 }
 
-/**
- * Subscribe to auth state changes
- */
-export function onAuthStateChange(callback) {
+export async function onAuthStateChange(callback) {
+  const auth = await getAuthInstance();
+  if (!auth) {
+    console.error('Firebase Auth is not initialized.');
+    return () => {}; // Return a no-op unsubscribe function
+  }
   return onAuthStateChanged(auth, callback);
+}
+
+export async function resetPassword(email) {
+  try {
+    const auth = await getAuthInstance();
+    if (!auth) {
+      return { success: false, error: 'Firebase Auth is not initialized.' };
+    }
+    
+    await sendPasswordResetEmail(auth, email);
+    return { success: true, message: 'Password reset email sent! Check your inbox.' };
+  } catch (error) {
+    console.error('Password reset error:', error);
+    return { success: false, error: error.message };
+  }
+}
+
+export async function sendVerificationEmail() {
+  try {
+    const auth = await getAuthInstance();
+    if (!auth || !auth.currentUser) {
+      return { success: false, error: 'No user is signed in.' };
+    }
+    
+    await sendEmailVerification(auth.currentUser);
+    return { success: true, message: 'Verification email sent! Check your inbox.' };
+  } catch (error) {
+    console.error('Verification email error:', error);
+    return { success: false, error: error.message };
+  }
+}
+
+export async function isEmailVerified() {
+  try {
+    const auth = await getAuthInstance();
+    if (!auth || !auth.currentUser) {
+      return false;
+    }
+    
+    // Reload user to get latest verification status
+    await reload(auth.currentUser);
+    return auth.currentUser.emailVerified;
+  } catch (error) {
+    console.error('Error checking email verification:', error);
+    return false;
+  }
 }
 

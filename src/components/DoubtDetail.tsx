@@ -1,8 +1,7 @@
-// DoubtDetail component
 import { useState, useEffect } from 'react';
 import { getReplies, addReply, verifyReply } from '../lib/firestore';
 import { uploadFile } from '../lib/storage';
-import { auth } from '../lib/firebase';
+import { getAuthInstance } from '../lib/firebase';
 import { getCurrentUserData } from '../lib/auth';
 import ReplyCard from './ReplyCard.astro';
 
@@ -56,7 +55,8 @@ export default function DoubtDetail({ question, initialReplies }: Props) {
     setMessage(null);
 
     try {
-      const user = auth.currentUser;
+      const authInstance = await getAuthInstance();
+      const user = authInstance?.currentUser;
       if (!user) {
         setMessage({ type: 'error', text: 'Please login to reply' });
         setLoading(false);

@@ -1,12 +1,11 @@
-// Firebase Storage helper functions
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { storage } from './firebase';
-
-/**
- * Upload a file to Firebase Storage
- */
+import { getStorageInstance } from './firebase';
 export async function uploadFile(file, path) {
   try {
+    const storage = await getStorageInstance();
+    if (!storage) {
+      return { success: false, error: 'Firebase Storage is not initialized.' };
+    }
     const storageRef = ref(storage, path);
     const snapshot = await uploadBytes(storageRef, file);
     const downloadURL = await getDownloadURL(snapshot.ref);
@@ -17,9 +16,6 @@ export async function uploadFile(file, path) {
   }
 }
 
-/**
- * Upload multiple files
- */
 export async function uploadFiles(files, basePath) {
   try {
     const uploadPromises = files.map((file, index) => {
