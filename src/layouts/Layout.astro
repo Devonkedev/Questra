@@ -16,11 +16,13 @@ const { title } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="description" content="ShriSolve - Where curiosity meets clarity. A student-teacher doubt-solving platform for TSRS Moulsari." />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/logo-small.png" />
     <meta name="generator" content={Astro.generator} />
     <title>{title} | ShriSolve</title>
   </head>
-  <body class="min-h-screen flex flex-col bg-[#F9F6F2]">
+  <body class="min-h-screen flex flex-col bg-gradient-to-br from-slate-50 via-orange-50/20 to-slate-50">
     <NavBar />
     <main class="flex-1">
       <slot />
