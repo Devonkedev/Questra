@@ -1,0 +1,19 @@
+---
+import Layout from '../layouts/Layout.astro';
+import TeacherDashboard from '../components/TeacherDashboard';
+import { getQuestions } from '../lib/firestore';
+
+const questions = await getQuestions();
+---
+
+<Layout title="Teacher Dashboard">
+  <div class="container mx-auto px-4 py-12">
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-bold text-[#A00021] mb-2">Teacher Dashboard</h1>
+      <p class="text-gray-600">Manage doubts, verify answers, and upload resources</p>
+    </div>
+    
+    <TeacherDashboard client:load initialQuestions={questions} />
+  </div>
+</Layout>
+

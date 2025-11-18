@@ -1,0 +1,26 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ReplyCard from '../../components/ReplyCard.astro';
+import { getQuestion, getReplies } from '../../lib/firestore';
+import DoubtDetail from '../../components/DoubtDetail';
+
+const { id } = Astro.params;
+const question = await getQuestion(id);
+const replies = question ? await getReplies(id) : [];
+---
+
+<Layout title="Doubt Details">
+  <div class="container mx-auto px-4 py-12">
+    {question ? (
+      <DoubtDetail client:load question={question} initialReplies={replies} />
+    ) : (
+      <div class="text-center py-12">
+        <p class="text-gray-600">Question not found.</p>
+        <a href="/doubts" class="text-[#A00021] hover:underline mt-4 inline-block">
+          Back to Doubts
+        </a>
+      </div>
+    )}
+  </div>
+</Layout>
+

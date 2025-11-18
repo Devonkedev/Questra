@@ -1,0 +1,47 @@
+---
+interface Props {
+  id: string;
+  title: string;
+  subject: string;
+  description: string;
+  fileURL: string;
+  createdAt: Date;
+  uploadedBy: string;
+}
+
+const { id, title, subject, description, fileURL, createdAt, uploadedBy } = Astro.props;
+
+const formatDate = (date: Date) => {
+  return new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  }).format(date);
+};
+---
+
+<div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition-shadow">
+  <div class="flex items-start justify-between mb-4">
+    <div class="flex-1">
+      <div class="flex items-center gap-3 mb-2">
+        <span class="px-3 py-1 bg-[#A00021] text-white text-sm font-semibold rounded-lg">
+          {subject}
+        </span>
+        <span class="text-gray-500 text-xs">{formatDate(createdAt)}</span>
+      </div>
+      <h3 class="text-xl font-bold text-gray-800 mb-2">{title}</h3>
+      <p class="text-gray-600 text-sm mb-2">By: {uploadedBy}</p>
+      <p class="text-gray-700 mb-4 leading-relaxed">{description}</p>
+    </div>
+  </div>
+  
+  <a 
+    href={fileURL}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="inline-block bg-[#F7C548] text-[#A00021] px-6 py-2 rounded-xl font-semibold hover:bg-[#F7C548]/90 transition-colors"
+  >
+    Download
+  </a>
+</div>
+

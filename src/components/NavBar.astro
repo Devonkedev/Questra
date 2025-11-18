@@ -1,0 +1,57 @@
+---
+// NavBar component
+---
+
+<nav class="bg-[#A00021] text-white shadow-md">
+  <div class="container mx-auto px-4 py-4">
+    <div class="flex items-center justify-between">
+      <a href="/" class="flex items-center space-x-2">
+        <h1 class="text-2xl font-bold">ShriSolve</h1>
+        <span class="text-sm text-[#F7C548]">TSRS Moulsari</span>
+      </a>
+      
+      <div class="hidden md:flex items-center space-x-6">
+        <a href="/" class="hover:text-[#F7C548] transition-colors">Home</a>
+        <a href="/notes" class="hover:text-[#F7C548] transition-colors">Notes</a>
+        <a href="/doubts" class="hover:text-[#F7C548] transition-colors">Doubts</a>
+        <a href="/ask" class="hover:text-[#F7C548] transition-colors">Ask a Doubt</a>
+        <a href="/upload" class="hover:text-[#F7C548] transition-colors">Upload</a>
+        <a href="/login" class="bg-[#F7C548] text-[#A00021] px-4 py-2 rounded-lg font-semibold hover:bg-[#F7C548]/90 transition-colors">
+          Login
+        </a>
+      </div>
+      
+      <!-- Mobile menu button -->
+      <button id="mobile-menu-btn" class="md:hidden text-white">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+    
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-2">
+      <a href="/" class="block py-2 hover:text-[#F7C548] transition-colors">Home</a>
+      <a href="/notes" class="block py-2 hover:text-[#F7C548] transition-colors">Notes</a>
+      <a href="/doubts" class="block py-2 hover:text-[#F7C548] transition-colors">Doubts</a>
+      <a href="/ask" class="block py-2 hover:text-[#F7C548] transition-colors">Ask a Doubt</a>
+      <a href="/upload" class="block py-2 hover:text-[#F7C548] transition-colors">Upload</a>
+      <a href="/login" class="block bg-[#F7C548] text-[#A00021] px-4 py-2 rounded-lg font-semibold text-center">
+        Login
+      </a>
+    </div>
+  </div>
+</nav>
+
+<script>
+  // Mobile menu toggle
+  const menuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  
+  if (menuBtn && mobileMenu) {
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+  }
+</script>
+
