@@ -1,5 +1,7 @@
 ---
-import Layout from '../layouts/Layout.astro';
+export const prerender = false;
+
+import Layout from '../../layouts/Layout.astro';
 import ReplyCard from '../../components/ReplyCard.astro';
 import { getQuestion, getReplies } from '../../lib/firestore';
 import DoubtDetail from '../../components/DoubtDetail';

@@ -20,6 +20,7 @@
     "tailwindcss": "^4.1.17"
   },
   "devDependencies": {
+    "@astrojs/netlify": "^6.6.1",
     "dotenv": "^17.2.3"
   }
 }
