@@ -2,6 +2,14 @@ import { useState, useEffect } from 'react';
 import { signIn, signUp, resetPassword, sendVerificationEmail, isEmailVerified } from '../lib/auth';
 import { getAuthInstance } from '../lib/firebase';
 
+const getFriendlyErrorMessage = (error?: string) => {
+  if (!error) return 'An unexpected error occurred. Please try again.';
+  if (error.includes('Missing or insufficient permissions')) {
+    return 'You do not yet have access to this area. Please verify your email or contact an administrator to enable your account.';
+  }
+  return error;
+};
+
 export default function LoginForm() {
   const [isLogin, setIsLogin] = useState(true);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
@@ -48,12 +56,12 @@ export default function LoginForm() {
             setUserEmail(result.user?.email || null);
             setMessage({ 
               type: 'warning', 
-              text: 'Your email is not verified. Please check your inbox for the verification link.' 
+              text: 'Your email is not verified. Please check your inbox for the verification link and verify your email before using all features.' 
             });
             // Still allow login, but show warning
             setTimeout(() => {
               window.location.href = '/';
-            }, 2000);
+            }, 3000);
           } else {
             setMessage({ type: 'success', text: 'Login successful!' });
             setTimeout(() => {
@@ -61,7 +69,7 @@ export default function LoginForm() {
             }, 1000);
           }
         } else {
-          setMessage({ type: 'error', text: result.error || 'An error occurred' });
+          setMessage({ type: 'error', text: getFriendlyErrorMessage(result.error) });
         }
       } else {
         if (!formData.name) {
@@ -78,13 +86,13 @@ export default function LoginForm() {
           if (result.emailVerificationSent) {
             setMessage({ 
               type: 'success', 
-              text: 'Account created! Please check your email to verify your account before logging in.' 
+              text: 'Account created successfully! A verification email has been sent to ' + formData.email + '. Please check your inbox and click the verification link before logging in.' 
             });
             // Switch to login tab after a moment
             setTimeout(() => {
               setIsLogin(true);
-              setFormData({ ...formData, password: '' });
-            }, 2000);
+              setFormData({ ...formData, password: '', email: formData.email });
+            }, 3000);
           } else {
             setMessage({ type: 'success', text: 'Account created successfully!' });
             setTimeout(() => {
@@ -92,11 +100,11 @@ export default function LoginForm() {
             }, 1000);
           }
         } else {
-          setMessage({ type: 'error', text: result.error || 'An error occurred' });
+          setMessage({ type: 'error', text: getFriendlyErrorMessage(result.error) });
         }
       }
     } catch (error: any) {
-      setMessage({ type: 'error', text: error.message || 'An error occurred' });
+      setMessage({ type: 'error', text: getFriendlyErrorMessage(error?.message) });
     } finally {
       setLoading(false);
     }
@@ -119,10 +127,10 @@ export default function LoginForm() {
         setMessage({ type: 'success', text: result.message || 'Password reset email sent! Check your inbox.' });
         setShowForgotPassword(false);
       } else {
-        setMessage({ type: 'error', text: result.error || 'Failed to send reset email' });
+        setMessage({ type: 'error', text: getFriendlyErrorMessage(result.error || 'Failed to send reset email') });
       }
     } catch (error: any) {
-      setMessage({ type: 'error', text: error.message || 'An error occurred' });
+      setMessage({ type: 'error', text: getFriendlyErrorMessage(error?.message) });
     } finally {
       setLoading(false);
     }
@@ -137,10 +145,10 @@ export default function LoginForm() {
       if (result.success) {
         setMessage({ type: 'success', text: result.message || 'Verification email sent! Check your inbox.' });
       } else {
-        setMessage({ type: 'error', text: result.error || 'Failed to send verification email' });
+        setMessage({ type: 'error', text: getFriendlyErrorMessage(result.error || 'Failed to send verification email') });
       }
     } catch (error: any) {
-      setMessage({ type: 'error', text: error.message || 'An error occurred' });
+      setMessage({ type: 'error', text: getFriendlyErrorMessage(error?.message) });
     } finally {
       setLoading(false);
     }
@@ -184,18 +192,27 @@ export default function LoginForm() {
       )}
 
       {showVerificationNotice && userEmail && (
-        <div className="mb-4 p-4 rounded-xl bg-blue-100 text-blue-800">
-          <p className="font-semibold mb-2">Email Verification Required</p>
-          <p className="text-sm mb-3">
-            Please verify your email ({userEmail}) to continue. Check your inbox for the verification link.
-          </p>
-          <button
-            onClick={handleResendVerification}
-            disabled={loading}
-            className="text-sm text-blue-600 hover:text-blue-800 underline font-semibold"
-          >
-            Resend verification email
-          </button>
+        <div className="mb-4 p-4 rounded-xl bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-orange-200">
+          <div className="flex items-start">
+            <div className="flex-shrink-0">
+              <svg className="h-5 w-5 text-orange-600 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <div className="ml-3 flex-1">
+              <h3 className="text-sm font-bold text-orange-800 mb-1">Email Verification Required</h3>
+              <p className="text-sm text-orange-700 mb-3">
+                Please verify your email address <strong>({userEmail})</strong> to access all features. Check your inbox (and spam folder) for the verification email from Firebase.
+              </p>
+              <button
+                onClick={handleResendVerification}
+                disabled={loading}
+                className="text-sm bg-orange-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-orange-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading ? 'Sending...' : 'Resend Verification Email'}
+              </button>
+            </div>
+          </div>
         </div>
       )}
 

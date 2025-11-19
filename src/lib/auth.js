@@ -68,9 +68,20 @@ export async function signUp(email, password, name, role = 'student', subjects =
     }
     
     try {
-      await sendEmailVerification(user);
+      const actionCodeSettings = typeof window !== 'undefined' 
+        ? {
+            url: window.location.origin + '/login',
+            handleCodeInApp: false
+          }
+        : undefined;
+      
+      await sendEmailVerification(user, actionCodeSettings);
     } catch (error) {
       console.error('Error sending verification email:', error);
+      return { 
+        success: false, 
+        error: `Account created but failed to send verification email: ${error.message}. Please contact support.` 
+      };
     }
     
     if (db) {
@@ -156,8 +167,11 @@ export async function sendVerificationEmail() {
       return { success: false, error: 'No user is signed in.' };
     }
     
-    await sendEmailVerification(auth.currentUser);
-    return { success: true, message: 'Verification email sent! Check your inbox.' };
+    await sendEmailVerification(auth.currentUser, {
+      url: typeof window !== 'undefined' ? window.location.origin + '/login' : undefined,
+      handleCodeInApp: false
+    });
+    return { success: true, message: 'Verification email sent! Please check your inbox and click the verification link.' };
   } catch (error) {
     console.error('Verification email error:', error);
     return { success: false, error: error.message };
