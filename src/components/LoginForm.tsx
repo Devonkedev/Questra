@@ -2,11 +2,20 @@ import { useState, useEffect } from 'react';
 import { signIn, signUp, resetPassword, sendVerificationEmail, isEmailVerified } from '../lib/auth';
 import { getAuthInstance } from '../lib/firebase';
 
-const getFriendlyErrorMessage = (error?: string) => {
+const getFriendlyErrorMessage = (error?: string, isAuthError = false) => {
   if (!error) return 'An unexpected error occurred. Please try again.';
-  if (error.includes('Missing or insufficient permissions')) {
+  
+  // Only show this specific message for authentication errors (login/signup failures)
+  // Not for Firestore permission errors that happen after successful login
+  if (isAuthError && error.includes('Missing or insufficient permissions')) {
     return 'You do not yet have access to this area. Please verify your email or contact an administrator to enable your account.';
   }
+  
+  // For other permission errors, show the original error or a generic message
+  if (error.includes('Missing or insufficient permissions')) {
+    return 'Unable to access data. Please verify your email address or contact support.';
+  }
+  
   return error;
 };
 
@@ -69,7 +78,8 @@ export default function LoginForm() {
             }, 1000);
           }
         } else {
-          setMessage({ type: 'error', text: getFriendlyErrorMessage(result.error) });
+          // This is a login error, so pass isAuthError=true
+          setMessage({ type: 'error', text: getFriendlyErrorMessage(result.error, true) });
         }
       } else {
         if (!formData.name) {
@@ -100,11 +110,12 @@ export default function LoginForm() {
             }, 1000);
           }
         } else {
-          setMessage({ type: 'error', text: getFriendlyErrorMessage(result.error) });
+          // This is a signup error, so pass isAuthError=true
+          setMessage({ type: 'error', text: getFriendlyErrorMessage(result.error, true) });
         }
       }
     } catch (error: any) {
-      setMessage({ type: 'error', text: getFriendlyErrorMessage(error?.message) });
+      setMessage({ type: 'error', text: getFriendlyErrorMessage(error?.message, true) });
     } finally {
       setLoading(false);
     }
@@ -127,10 +138,10 @@ export default function LoginForm() {
         setMessage({ type: 'success', text: result.message || 'Password reset email sent! Check your inbox.' });
         setShowForgotPassword(false);
       } else {
-        setMessage({ type: 'error', text: getFriendlyErrorMessage(result.error || 'Failed to send reset email') });
+        setMessage({ type: 'error', text: getFriendlyErrorMessage(result.error || 'Failed to send reset email', false) });
       }
     } catch (error: any) {
-      setMessage({ type: 'error', text: getFriendlyErrorMessage(error?.message) });
+      setMessage({ type: 'error', text: getFriendlyErrorMessage(error?.message, false) });
     } finally {
       setLoading(false);
     }
@@ -145,10 +156,10 @@ export default function LoginForm() {
       if (result.success) {
         setMessage({ type: 'success', text: result.message || 'Verification email sent! Check your inbox.' });
       } else {
-        setMessage({ type: 'error', text: getFriendlyErrorMessage(result.error || 'Failed to send verification email') });
+        setMessage({ type: 'error', text: getFriendlyErrorMessage(result.error || 'Failed to send verification email', false) });
       }
     } catch (error: any) {
-      setMessage({ type: 'error', text: getFriendlyErrorMessage(error?.message) });
+      setMessage({ type: 'error', text: getFriendlyErrorMessage(error?.message, false) });
     } finally {
       setLoading(false);
     }
@@ -345,4 +356,5 @@ export default function LoginForm() {
     </div>
   );
 }
+
 
