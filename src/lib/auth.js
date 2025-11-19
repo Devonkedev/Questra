@@ -67,59 +67,88 @@ export async function signUp(email, password, name, role = 'student', subjects =
       }
     }
     
+    // Create user document in Firestore FIRST (before email verification)
+    // This ensures the user exists in Firestore even if email verification fails
+    if (db) {
+      try {
+        await setDoc(doc(db, 'users', user.uid), {
+          uid: user.uid,
+          name,
+          role,
+          subjects,
+          email,
+          emailVerified: false,
+          createdAt: new Date()
+        });
+      } catch (dbError) {
+        console.error('Error creating user document:', dbError);
+        // Don't fail signup if Firestore write fails - user is still created in Auth
+        // They can access the app, but might need to contact support
+      }
+    }
+    
+    // Send verification email
+    let emailVerificationSent = false;
+    let verificationError = null;
+    
     try {
-      // Get the current origin, but use a fallback if domain not authorized
+      // Get the current origin for redirect URL
       let continueUrl = '/login';
       if (typeof window !== 'undefined') {
         try {
           continueUrl = window.location.origin + '/login';
         } catch (e) {
-          // Fallback if origin not available
           continueUrl = '/login';
         }
       }
       
-      const actionCodeSettings = {
-        url: continueUrl,
-        handleCodeInApp: false
-      };
-      
-      await sendEmailVerification(user, actionCodeSettings);
-    } catch (error) {
-      console.error('Error sending verification email:', error);
-      
-      // If it's a domain authorization error, still create the account but warn user
-      if (error.message && error.message.includes('unauthorized-continue-uri')) {
-        // Account is created, but email verification failed due to domain config
-        // User can still verify later via resend
-        return { 
-          success: true, 
-          user, 
-          emailVerificationSent: false,
-          warning: 'Account created! However, email verification could not be sent automatically. Please use "Resend Verification Email" after logging in, or contact support to add your domain to Firebase authorized domains.'
+      // Try with full URL first
+      try {
+        const actionCodeSettings = {
+          url: continueUrl,
+          handleCodeInApp: false
         };
+        
+        await sendEmailVerification(user, actionCodeSettings);
+        emailVerificationSent = true;
+        console.log('✅ Verification email sent successfully');
+      } catch (urlError) {
+        // If domain not authorized, try without actionCodeSettings
+        if (urlError.message && urlError.message.includes('unauthorized-continue-uri')) {
+          console.warn('⚠️ Domain not authorized, trying without redirect URL');
+          try {
+            await sendEmailVerification(user);
+            emailVerificationSent = true;
+            console.log('✅ Verification email sent (without redirect URL)');
+          } catch (fallbackError) {
+            console.error('❌ Failed to send verification email even without URL:', fallbackError);
+            verificationError = fallbackError.message;
+          }
+        } else {
+          throw urlError;
+        }
       }
-      
-      // For other errors, fail signup
-      return { 
-        success: false, 
-        error: `Account created but failed to send verification email: ${error.message}. Please contact support.` 
-      };
+    } catch (error) {
+      console.error('❌ Error sending verification email:', error);
+      verificationError = error.message;
+      emailVerificationSent = false;
     }
     
-    if (db) {
-      await setDoc(doc(db, 'users', user.uid), {
-        uid: user.uid,
-        name,
-        role,
-        subjects,
-        email,
-        emailVerified: false,
-        createdAt: new Date()
-      });
+    // Return success with verification status
+    const result = { 
+      success: true, 
+      user, 
+      emailVerificationSent 
+    };
+    
+    // Add warning if verification email failed
+    if (!emailVerificationSent && verificationError) {
+      result.warning = `Account created successfully! However, the verification email could not be sent: ${verificationError}. Please use "Resend Verification Email" after logging in.`;
+    } else if (!emailVerificationSent) {
+      result.warning = 'Account created successfully! However, the verification email could not be sent. Please use "Resend Verification Email" after logging in.';
     }
     
-    return { success: true, user, emailVerificationSent: true };
+    return result;
   } catch (error) {
     return { success: false, error: error.message };
   }

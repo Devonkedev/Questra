@@ -5,17 +5,15 @@ import { getAuthInstance } from '../lib/firebase';
 const getFriendlyErrorMessage = (error?: string, isAuthError = false) => {
   if (!error) return 'An unexpected error occurred. Please try again.';
   
-  // Only show this specific message for authentication errors (login/signup failures)
-  // Not for Firestore permission errors that happen after successful login
-  if (isAuthError && error.includes('Missing or insufficient permissions')) {
-    return 'You do not yet have access to this area. Please verify your email or contact an administrator to enable your account.';
-  }
-  
-  // For other permission errors, show the original error or a generic message
+  // Never show the "access" message - it's misleading
+  // Permission errors are usually Firestore issues, not auth issues
   if (error.includes('Missing or insufficient permissions')) {
-    return 'Unable to access data. Please verify your email address or contact support.';
+    // This is a Firestore security rules issue
+    // Don't show it as an auth error - it happens after successful login
+    return 'Unable to access data. Please verify your email address or contact support if the issue persists.';
   }
   
+  // For actual auth errors, show the Firebase error message
   return error;
 };
 
@@ -96,7 +94,7 @@ export default function LoginForm() {
           if (result.emailVerificationSent) {
             setMessage({ 
               type: 'success', 
-              text: 'Account created successfully! A verification email has been sent to ' + formData.email + '. Please check your inbox and click the verification link before logging in.' 
+              text: 'Account created successfully! A verification email has been sent to ' + formData.email + '. Please check your inbox (and spam folder) and click the verification link before logging in.' 
             });
             // Switch to login tab after a moment
             setTimeout(() => {
@@ -113,12 +111,17 @@ export default function LoginForm() {
             setTimeout(() => {
               setIsLogin(true);
               setFormData({ ...formData, password: '', email: formData.email });
-            }, 4000);
+            }, 5000);
           } else {
-            setMessage({ type: 'success', text: 'Account created successfully!' });
+            // Account created but no verification email sent (shouldn't happen, but handle it)
+            setMessage({ 
+              type: 'warning', 
+              text: 'Account created successfully! However, verification email was not sent. Please log in and use "Resend Verification Email" button.' 
+            });
             setTimeout(() => {
-              window.location.href = '/';
-            }, 1000);
+              setIsLogin(true);
+              setFormData({ ...formData, password: '', email: formData.email });
+            }, 4000);
           }
         } else {
           // This is a signup error, so pass isAuthError=true
