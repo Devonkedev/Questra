@@ -103,6 +103,17 @@ export default function LoginForm() {
               setIsLogin(true);
               setFormData({ ...formData, password: '', email: formData.email });
             }, 3000);
+          } else if (result.warning) {
+            // Account created but email verification failed
+            setMessage({ 
+              type: 'warning', 
+              text: result.warning 
+            });
+            // Switch to login tab so they can resend
+            setTimeout(() => {
+              setIsLogin(true);
+              setFormData({ ...formData, password: '', email: formData.email });
+            }, 4000);
           } else {
             setMessage({ type: 'success', text: 'Account created successfully!' });
             setTimeout(() => {
