@@ -111,17 +111,17 @@ export async function signUp(email, password, name, role = 'student', subjects =
         
         await sendEmailVerification(user, actionCodeSettings);
         emailVerificationSent = true;
-        console.log('✅ Verification email sent successfully');
+        console.log('Verification email sent successfully');
       } catch (urlError) {
         // If domain not authorized, try without actionCodeSettings
         if (urlError.message && urlError.message.includes('unauthorized-continue-uri')) {
-          console.warn('⚠️ Domain not authorized, trying without redirect URL');
+          console.warn('Domain not authorized, trying without redirect URL');
           try {
             await sendEmailVerification(user);
             emailVerificationSent = true;
-            console.log('✅ Verification email sent (without redirect URL)');
+            console.log('Verification email sent (without redirect URL)');
           } catch (fallbackError) {
-            console.error('❌ Failed to send verification email even without URL:', fallbackError);
+            console.error('Failed to send verification email even without URL:', fallbackError);
             verificationError = fallbackError.message;
           }
         } else {
@@ -129,7 +129,7 @@ export async function signUp(email, password, name, role = 'student', subjects =
         }
       }
     } catch (error) {
-      console.error('❌ Error sending verification email:', error);
+      console.error('Error sending verification email:', error);
       verificationError = error.message;
       emailVerificationSent = false;
     }
