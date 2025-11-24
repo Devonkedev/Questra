@@ -2,18 +2,22 @@
 import Layout from '../layouts/Layout.astro';
 import { getNotes } from '../lib/firestore';
 import NotesList from '../components/NotesList';
+import AuthGate from '../components/AuthGate';
 
-const notes = await getNotes();
+// Get initial notes (limited for performance)
+const notes = await getNotes({}, 50);
 ---
 
 <Layout title="Notes">
-  <div class="container mx-auto px-4 py-12">
-    <div class="text-center mb-8">
-      <h1 class="text-4xl font-bold text-[#A00021] mb-2">Study Resources</h1>
-      <p class="text-gray-600">Browse and download teacher-uploaded notes and materials</p>
+  <AuthGate client:load>
+    <div class="container mx-auto px-4 py-12">
+      <div class="text-center mb-8">
+        <h1 class="text-4xl font-bold text-[#A00021] mb-2">Study Resources</h1>
+        <p class="text-gray-600">Browse and download teacher-uploaded notes and materials</p>
+      </div>
+      
+      <NotesList client:load initialNotes={notes} />
     </div>
-    
-    <NotesList client:load initialNotes={notes} />
-  </div>
+  </AuthGate>
 </Layout>
 

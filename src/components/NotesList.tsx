@@ -1,5 +1,5 @@
 // NotesList component with filtering and sorting
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { getNotes } from '../lib/firestore';
 import SubjectDropdown from './SubjectDropdown';
 
@@ -22,12 +22,34 @@ export default function NotesList({ initialNotes }: Props) {
   const [filter, setFilter] = useState({ subject: '' });
   const [sortBy, setSortBy] = useState<'newest' | 'oldest'>('newest');
   const [loading, setLoading] = useState(false);
+  const [hasInitialLoad, setHasInitialLoad] = useState(false);
+
+  // Memoize sorted notes from initial data
+  const sortedInitialNotes = useMemo(() => {
+    if (!hasInitialLoad && initialNotes.length > 0) {
+      return [...initialNotes].sort((a, b) => {
+        const dateA = new Date(a.createdAt).getTime();
+        const dateB = new Date(b.createdAt).getTime();
+        return sortBy === 'newest' ? dateB - dateA : dateA - dateB;
+      });
+    }
+    return [];
+  }, [initialNotes, sortBy, hasInitialLoad]);
 
   useEffect(() => {
+    // Skip initial load if we have initialNotes and no filter
+    if (!hasInitialLoad && initialNotes.length > 0 && !filter.subject) {
+      setHasInitialLoad(true);
+      if (sortedInitialNotes.length > 0) {
+        setNotes(sortedInitialNotes);
+      }
+      return;
+    }
+
     const loadNotes = async () => {
       setLoading(true);
       try {
-        const filteredNotes = await getNotes(filter);
+        const filteredNotes = await getNotes(filter, 50);
         // Sort notes
         const sorted = [...filteredNotes].sort((a, b) => {
           const dateA = new Date(a.createdAt).getTime();
@@ -43,7 +65,8 @@ export default function NotesList({ initialNotes }: Props) {
     };
 
     loadNotes();
-  }, [filter, sortBy]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filter.subject, sortBy]);
 
   const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat('en-US', {

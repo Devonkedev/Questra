@@ -30,6 +30,16 @@ export default function LoginForm() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [redirectPath, setRedirectPath] = useState('/');
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    const redirect = params.get('redirect');
+    if (redirect && redirect.startsWith('/')) {
+      setRedirectPath(redirect);
+    }
+  }, []);
 
   // Check email verification status
   useEffect(() => {
@@ -58,6 +68,8 @@ export default function LoginForm() {
         
         if (result.success) {
           // Check if email is verified
+          // Default to /app after login, unless a specific redirect is provided
+          const targetPath = redirectPath || '/app';
           if (!result.emailVerified) {
             setShowVerificationNotice(true);
             setUserEmail(result.user?.email || null);
@@ -67,12 +79,12 @@ export default function LoginForm() {
             });
             // Still allow login, but show warning
             setTimeout(() => {
-              window.location.href = '/';
+              window.location.href = targetPath;
             }, 3000);
           } else {
             setMessage({ type: 'success', text: 'Login successful!' });
             setTimeout(() => {
-              window.location.href = '/';
+              window.location.href = targetPath;
             }, 1000);
           }
         } else {

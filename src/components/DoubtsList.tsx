@@ -1,5 +1,5 @@
 // DoubtsList component with filtering
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { getQuestions } from '../lib/firestore';
 import SubjectDropdown from './SubjectDropdown';
 
@@ -25,12 +25,22 @@ export default function DoubtsList({ initialQuestions }: Props) {
     status: ''
   });
   const [loading, setLoading] = useState(false);
+  const [hasInitialLoad, setHasInitialLoad] = useState(false);
+
+  // Memoize filter changes to prevent unnecessary re-renders
+  const filterKey = useMemo(() => `${filters.subject}-${filters.status}`, [filters.subject, filters.status]);
 
   useEffect(() => {
+    // Skip initial load if we have initialQuestions and filters haven't changed
+    if (!hasInitialLoad && initialQuestions.length > 0 && !filters.subject && !filters.status) {
+      setHasInitialLoad(true);
+      return;
+    }
+
     const loadQuestions = async () => {
       setLoading(true);
       try {
-        const filteredQuestions = await getQuestions(filters);
+        const filteredQuestions = await getQuestions(filters, 50);
         setQuestions(filteredQuestions);
       } catch (error) {
         console.error('Error loading questions:', error);
@@ -40,7 +50,8 @@ export default function DoubtsList({ initialQuestions }: Props) {
     };
 
     loadQuestions();
-  }, [filters]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filterKey]);
 
   return (
     <div>

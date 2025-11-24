@@ -8,24 +8,28 @@ import {
   query,
   where,
   orderBy,
+  limit,
   Timestamp
 } from 'firebase/firestore';
 import { getDbInstance } from './firebase';
 
-export async function getQuestions(filters = {}) {
+export async function getQuestions(filters = {}, maxResults = 50) {
   try {
     const db = await getDbInstance();
     if (!db) return [];
-    let q = query(collection(db, 'questions'), orderBy('createdAt', 'desc'));
+    
+    // Build query with filters
+    const constraints = [orderBy('createdAt', 'desc'), limit(maxResults)];
     
     if (filters.subject) {
-      q = query(q, where('subject', '==', filters.subject));
+      constraints.unshift(where('subject', '==', filters.subject));
     }
     
     if (filters.status) {
-      q = query(q, where('status', '==', filters.status));
+      constraints.unshift(where('status', '==', filters.status));
     }
     
+    const q = query(collection(db, 'questions'), ...constraints);
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map(doc => ({
       id: doc.id,
@@ -63,15 +67,40 @@ export async function createQuestion(questionData) {
   try {
     const db = await getDbInstance();
     if (!db) return { success: false, error: 'Firestore is not initialized' };
-    const docRef = await addDoc(collection(db, 'questions'), {
+    
+    // Validate required fields
+    if (!questionData.question || !questionData.subject || !questionData.topic) {
+      return { success: false, error: 'Missing required fields: question, subject, and topic are required' };
+    }
+    
+    const questionDoc = {
       ...questionData,
       createdAt: Timestamp.now(),
-      status: 'open'
-    });
+      status: 'open',
+      // Ensure askedById is set for security rules
+      askedById: questionData.askedById || questionData.askedBy || 'anonymous'
+    };
+    
+    console.log('Creating question with data:', { ...questionDoc, question: questionDoc.question.substring(0, 50) + '...' });
+    
+    const docRef = await addDoc(collection(db, 'questions'), questionDoc);
+    console.log('Question created successfully with ID:', docRef.id);
+    
     return { success: true, id: docRef.id };
   } catch (error) {
     console.error('Error creating question:', error);
-    return { success: false, error: error.message };
+    console.error('Error code:', error.code);
+    console.error('Error message:', error.message);
+    
+    // Provide more specific error messages
+    let errorMessage = error.message;
+    if (error.code === 'permission-denied') {
+      errorMessage = 'Permission denied. Please ensure you are logged in and your Firestore security rules allow authenticated users to create questions.';
+    } else if (error.code === 'unavailable') {
+      errorMessage = 'Firestore is temporarily unavailable. Please try again in a moment.';
+    }
+    
+    return { success: false, error: errorMessage };
   }
 }
 
@@ -135,16 +164,19 @@ export async function verifyReply(questionId, replyId) {
   }
 }
 
-export async function getNotes(filters = {}) {
+export async function getNotes(filters = {}, maxResults = 50) {
   try {
     const db = await getDbInstance();
     if (!db) return [];
-    let q = query(collection(db, 'notes'), orderBy('createdAt', 'desc'));
+    
+    // Build query with filters
+    const constraints = [orderBy('createdAt', 'desc'), limit(maxResults)];
     
     if (filters.subject) {
-      q = query(q, where('subject', '==', filters.subject));
+      constraints.unshift(where('subject', '==', filters.subject));
     }
     
+    const q = query(collection(db, 'notes'), ...constraints);
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map(doc => ({
       id: doc.id,

@@ -3,6 +3,7 @@ import { createQuestion } from '../lib/firestore';
 import { uploadFiles } from '../lib/storage';
 import SubjectDropdown from './SubjectDropdown';
 import { getAuthInstance } from '../lib/firebase';
+import { getCurrentUserData } from '../lib/auth';
 
 const topics = {
   Physics: ['Mechanics', 'Thermodynamics', 'Optics', 'Electromagnetism', 'Modern Physics'],
@@ -46,14 +47,30 @@ export default function AskDoubtForm() {
       // Get current user
       const authInstance = await getAuthInstance();
       const user = authInstance?.currentUser;
-      const askedBy = formData.isAnonymous ? 'anonymous' : (user?.uid || 'anonymous');
+      
+      if (!user) {
+        throw new Error('You must be logged in to post a question. Please refresh the page and try again.');
+      }
 
-      // Create question
+      // Get user data for better tracking
+      let userData = null;
+      try {
+        userData = await getCurrentUserData();
+      } catch (err) {
+        console.warn('Could not fetch user data:', err);
+      }
+
+      const askedBy = formData.isAnonymous 
+        ? 'anonymous' 
+        : (userData?.name || userData?.email || user.email || user.uid);
+
+      // Create question with user ID for security rules
       const result = await createQuestion({
         question: formData.question,
         subject: formData.subject,
         topic: formData.topic,
         askedBy,
+        askedById: user.uid, // Add user ID for Firestore security rules
         attachments: attachmentUrls
       });
 
@@ -70,7 +87,19 @@ export default function AskDoubtForm() {
         setMessage({ type: 'error', text: result.error || 'Failed to post question' });
       }
     } catch (error: any) {
-      setMessage({ type: 'error', text: error.message || 'An error occurred' });
+      console.error('Error posting question:', error);
+      let errorMessage = error.message || 'An error occurred while posting your question.';
+      
+      // Provide more helpful error messages
+      if (error.message?.includes('Missing or insufficient permissions')) {
+        errorMessage = 'Permission denied. Please make sure you are logged in and your account is verified. If the problem persists, contact support.';
+      } else if (error.message?.includes('permission')) {
+        errorMessage = 'You do not have permission to post questions. Please contact support if you believe this is an error.';
+      } else if (error.message?.includes('network') || error.message?.includes('fetch')) {
+        errorMessage = 'Network error. Please check your internet connection and try again.';
+      }
+      
+      setMessage({ type: 'error', text: errorMessage });
     } finally {
       setLoading(false);
     }

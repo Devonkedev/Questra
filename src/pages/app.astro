@@ -1,0 +1,13 @@
+---
+import Layout from '../layouts/Layout.astro';
+import AuthGate from '../components/AuthGate';
+import AppContent from '../components/AppContent';
+
+---
+
+<Layout title="ShriSolve App">
+  <AuthGate client:load>
+    <AppContent client:load />
+  </AuthGate>
+</Layout>
+

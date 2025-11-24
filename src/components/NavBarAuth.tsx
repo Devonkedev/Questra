@@ -1,0 +1,67 @@
+import { useEffect, useState } from 'react';
+import { onAuthStateChange, signOutUser } from '../lib/auth';
+import { getAuthInstance } from '../lib/firebase';
+
+export default function NavBarAuth() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let isMounted = true;
+    let unsubscribe: (() => void) | undefined;
+
+    (async () => {
+      try {
+        unsubscribe = await onAuthStateChange((user) => {
+          if (!isMounted) return;
+          setIsLoggedIn(!!user);
+          setLoading(false);
+        });
+      } catch (err) {
+        console.error('NavBarAuth: Failed to check auth', err);
+        if (!isMounted) return;
+        setLoading(false);
+      }
+    })();
+
+    return () => {
+      isMounted = false;
+      unsubscribe?.();
+    };
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await signOutUser();
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
+
+  if (loading) {
+    return (
+      <a href="/login" className="bg-gradient-to-r from-[#FF8C00] to-[#FFB347] text-white px-4 py-2 rounded-lg font-semibold hover:from-[#FF7F00] hover:to-[#FFA500] transition-all shadow-md hover:shadow-lg transform hover:scale-105">
+        Login
+      </a>
+    );
+  }
+
+  if (isLoggedIn) {
+    return (
+      <button
+        onClick={handleLogout}
+        className="bg-gradient-to-r from-[#FF8C00] to-[#FFB347] text-white px-4 py-2 rounded-lg font-semibold hover:from-[#FF7F00] hover:to-[#FFA500] transition-all shadow-md hover:shadow-lg transform hover:scale-105"
+      >
+        Logout
+      </button>
+    );
+  }
+
+  return (
+    <a href="/login" className="bg-gradient-to-r from-[#FF8C00] to-[#FFB347] text-white px-4 py-2 rounded-lg font-semibold hover:from-[#FF7F00] hover:to-[#FFA500] transition-all shadow-md hover:shadow-lg transform hover:scale-105">
+      Login
+    </a>
+  );
+}
+

@@ -1,4 +1,5 @@
 ---
+import NavBarAuth from './NavBarAuth';
 ---
 
 <nav class="bg-gradient-to-r from-[#DC143C] via-[#C41E3A] to-[#DC143C] text-white shadow-lg border-b border-white/10">
@@ -24,13 +25,11 @@
       
       <div class="hidden md:flex items-center space-x-6">
         <a href="/" class="hover:text-[#FFB347] transition-colors">Home</a>
+        <a href="/app" class="hover:text-[#FFB347] transition-colors">App</a>
         <a href="/notes" class="hover:text-[#FFB347] transition-colors">Notes</a>
         <a href="/doubts" class="hover:text-[#FFB347] transition-colors">Doubts</a>
         <a href="/ask" class="hover:text-[#FFB347] transition-colors">Ask a Doubt</a>
-        <a href="/upload" class="hover:text-[#FFB347] transition-colors">Upload</a>
-        <a href="/login" class="bg-gradient-to-r from-[#FF8C00] to-[#FFB347] text-white px-4 py-2 rounded-lg font-semibold hover:from-[#FF7F00] hover:to-[#FFA500] transition-all shadow-md hover:shadow-lg transform hover:scale-105">
-          Login
-        </a>
+        <NavBarAuth client:load />
       </div>
       
       <!-- Mobile menu button -->
@@ -44,13 +43,13 @@
     <!-- Mobile menu -->
     <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-2">
       <a href="/" class="block py-2 hover:text-[#FFB347] transition-colors">Home</a>
+      <a href="/app" class="block py-2 hover:text-[#FFB347] transition-colors">App</a>
       <a href="/notes" class="block py-2 hover:text-[#FFB347] transition-colors">Notes</a>
       <a href="/doubts" class="block py-2 hover:text-[#FFB347] transition-colors">Doubts</a>
       <a href="/ask" class="block py-2 hover:text-[#FFB347] transition-colors">Ask a Doubt</a>
-      <a href="/upload" class="block py-2 hover:text-[#FFB347] transition-colors">Upload</a>
-      <a href="/login" class="block bg-gradient-to-r from-[#FF8C00] to-[#FFB347] text-white px-4 py-2 rounded-lg font-semibold text-center shadow-md">
-        Login
-      </a>
+      <div class="py-2">
+        <NavBarAuth client:load />
+      </div>
     </div>
   </div>
 </nav>

@@ -1,8 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import HomeRedirect from '../components/HomeRedirect';
 ---
 
 <Layout title="Home">
+  <HomeRedirect client:load />
   <!-- Hero Section -->
   <section class="bg-gradient-to-br from-[#DC143C] via-[#C41E3A] to-[#DC143C] text-white py-20 relative overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent"></div>
@@ -31,22 +33,16 @@ import Layout from '../layouts/Layout.astro';
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
         <a 
-          href="/ask"
+          href="/login"
           class="bg-gradient-to-r from-[#FF8C00] to-[#FFB347] text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-[#FF7F00] hover:to-[#FFA500] transition-all shadow-xl hover:shadow-2xl transform hover:scale-105"
         >
-          Ask a Doubt
+          Get Started
         </a>
         <a 
           href="/login"
           class="bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/20 hover:border-white/50 transition-all shadow-lg"
         >
-          Teacher Login
-        </a>
-        <a 
-          href="/notes"
-          class="bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/20 hover:border-white/50 transition-all shadow-lg"
-        >
-          Browse Notes
+          Login
         </a>
       </div>
       </div>
@@ -110,10 +106,10 @@ import Layout from '../layouts/Layout.astro';
         Join the TSRS Moulsari community and start learning together.
       </p>
       <a 
-        href="/ask"
+        href="/login"
         class="inline-block bg-gradient-to-r from-[#DC143C] to-[#C41E3A] text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-[#C41E3A] hover:to-[#DC143C] transition-all shadow-xl hover:shadow-2xl transform hover:scale-105"
       >
-        Ask Your First Question
+        Get Started
       </a>
     </div>
   </section>
