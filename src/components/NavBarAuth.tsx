@@ -12,6 +12,14 @@ export default function NavBarAuth() {
 
     (async () => {
       try {
+        // Check current user immediately (Firebase restores sessions automatically)
+        const auth = await getAuthInstance();
+        if (auth?.currentUser && isMounted) {
+          setIsLoggedIn(true);
+          setLoading(false);
+        }
+        
+        // Set up listener for auth state changes
         unsubscribe = await onAuthStateChange((user) => {
           if (!isMounted) return;
           setIsLoggedIn(!!user);
@@ -19,8 +27,9 @@ export default function NavBarAuth() {
         });
       } catch (err) {
         console.error('NavBarAuth: Failed to check auth', err);
-        if (!isMounted) return;
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     })();
 

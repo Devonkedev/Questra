@@ -18,16 +18,16 @@ export default function AuthGate({ children, redirectTo = '/login' }: AuthGatePr
     let isMounted = true;
     let unsubscribe: (() => void) | undefined;
 
-    // Check auth state immediately (synchronous check)
+    // Firebase Auth automatically persists sessions, so we can check synchronously
     (async () => {
       try {
         const auth = await getAuthInstance();
+        // Firebase automatically restores sessions, so currentUser should be available immediately
         if (auth?.currentUser) {
-          // User is already logged in, set authenticated immediately
           if (!isMounted) return;
           setStatus('authenticated');
         } else {
-          // No user, set up listener
+          // Set up listener for auth state changes
           unsubscribe = await onAuthStateChange((user) => {
             if (!isMounted) return;
             setStatus(user ? 'authenticated' : 'unauthenticated');

@@ -1,5 +1,7 @@
 ---
 import NavBarAuth from './NavBarAuth';
+import NavBarLinks from './NavBarLinks';
+import NavBarLinksMobile from './NavBarLinksMobile';
 ---
 
 <nav class="bg-gradient-to-r from-[#DC143C] via-[#C41E3A] to-[#DC143C] text-white shadow-lg border-b border-white/10">
@@ -24,11 +26,7 @@ import NavBarAuth from './NavBarAuth';
       </a>
       
       <div class="hidden md:flex items-center space-x-6">
-        <a href="/" class="hover:text-[#FFD700] transition-colors">Home</a>
-        <a href="/app" class="hover:text-[#FFD700] transition-colors">App</a>
-        <a href="/notes" class="hover:text-[#FFD700] transition-colors">Notes</a>
-        <a href="/doubts" class="hover:text-[#FFD700] transition-colors">Doubts</a>
-        <a href="/ask" class="hover:text-[#FFD700] transition-colors">Ask a Doubt</a>
+        <NavBarLinks client:load />
         <NavBarAuth client:load />
       </div>
       
@@ -42,11 +40,7 @@ import NavBarAuth from './NavBarAuth';
     
     <!-- Mobile menu -->
     <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-2">
-      <a href="/" class="block py-2 hover:text-[#FFD700] transition-colors">Home</a>
-      <a href="/app" class="block py-2 hover:text-[#FFD700] transition-colors">App</a>
-      <a href="/notes" class="block py-2 hover:text-[#FFD700] transition-colors">Notes</a>
-      <a href="/doubts" class="block py-2 hover:text-[#FFD700] transition-colors">Doubts</a>
-      <a href="/ask" class="block py-2 hover:text-[#FFD700] transition-colors">Ask a Doubt</a>
+      <NavBarLinksMobile client:load />
       <div class="py-2">
         <NavBarAuth client:load />
       </div>

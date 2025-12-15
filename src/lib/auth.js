@@ -161,6 +161,7 @@ export async function signOutUser() {
       return { success: false, error: 'Firebase Auth is not initialized.' };
     }
     await signOut(auth);
+    
     return { success: true };
   } catch (error) {
     return { success: false, error: error.message };
