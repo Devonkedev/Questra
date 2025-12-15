@@ -1,0 +1,195 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Color Test">
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-4xl font-bold mb-8 text-gray-800">Color Palette Test</h1>
+    
+    <!-- Current Color Palette -->
+    <section class="mb-12">
+      <h2 class="text-2xl font-semibold mb-6 text-gray-700">Current Colors</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Red Primary -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <div class="h-24 w-full rounded-lg mb-4 bg-[#DC143C]"></div>
+          <p class="font-semibold text-gray-800">Primary Red</p>
+          <p class="text-sm text-gray-600 font-mono">#DC143C</p>
+        </div>
+        
+        <!-- Dark Red -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <div class="h-24 w-full rounded-lg mb-4 bg-[#C41E3A]"></div>
+          <p class="font-semibold text-gray-800">Dark Red</p>
+          <p class="text-sm text-gray-600 font-mono">#C41E3A</p>
+        </div>
+        
+        <!-- Yellow/Orange -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <div class="h-24 w-full rounded-lg mb-4 bg-[#FFB347]"></div>
+          <p class="font-semibold text-gray-800">Yellow/Orange</p>
+          <p class="text-sm text-gray-600 font-mono">#FFB347</p>
+        </div>
+        
+        <!-- Orange -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <div class="h-24 w-full rounded-lg mb-4 bg-[#FF8C00]"></div>
+          <p class="font-semibold text-gray-800">Orange</p>
+          <p class="text-sm text-gray-600 font-mono">#FF8C00</p>
+        </div>
+        
+        <!-- Dark Red Accent -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <div class="h-24 w-full rounded-lg mb-4 bg-[#A00021]"></div>
+          <p class="font-semibold text-gray-800">Dark Red Accent</p>
+          <p class="text-sm text-gray-600 font-mono">#A00021</p>
+        </div>
+        
+        <!-- Yellow Accent -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <div class="h-24 w-full rounded-lg mb-4 bg-[#F7C548]"></div>
+          <p class="font-semibold text-gray-800">Yellow Accent</p>
+          <p class="text-sm text-gray-600 font-mono">#F7C548</p>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Gradient Examples -->
+    <section class="mb-12">
+      <h2 class="text-2xl font-semibold mb-6 text-gray-700">Gradient Examples</h2>
+      <div class="space-y-4">
+        <div class="h-20 rounded-xl bg-gradient-to-r from-[#DC143C] via-[#C41E3A] to-[#DC143C]"></div>
+        <div class="h-20 rounded-xl bg-gradient-to-r from-[#FF8C00] to-[#FFB347]"></div>
+        <div class="h-20 rounded-xl bg-gradient-to-r from-[#FFB347] to-[#FF8C00]"></div>
+        <div class="h-20 rounded-xl bg-gradient-to-br from-[#DC143C] via-[#C41E3A] to-[#DC143C]"></div>
+      </div>
+    </section>
+    
+    <!-- Test Your Own Colors -->
+    <section class="mb-12">
+      <h2 class="text-2xl font-semibold mb-6 text-gray-700">Test Your Own Colors</h2>
+      <div class="bg-white rounded-xl shadow-lg p-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Color 1</label>
+            <input type="color" id="color1" value="#DC143C" class="w-full h-12 rounded-lg cursor-pointer">
+            <input type="text" id="color1-text" value="#DC143C" class="w-full mt-2 px-3 py-2 border border-gray-300 rounded-lg font-mono text-sm">
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Color 2</label>
+            <input type="color" id="color2" value="#FFB347" class="w-full h-12 rounded-lg cursor-pointer">
+            <input type="text" id="color2-text" value="#FFB347" class="w-full mt-2 px-3 py-2 border border-gray-300 rounded-lg font-mono text-sm">
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Color 3</label>
+            <input type="color" id="color3" value="#A00021" class="w-full h-12 rounded-lg cursor-pointer">
+            <input type="text" id="color3-text" value="#A00021" class="w-full mt-2 px-3 py-2 border border-gray-300 rounded-lg font-mono text-sm">
+          </div>
+        </div>
+        
+        <div class="mt-6">
+          <h3 class="text-lg font-semibold mb-3 text-gray-700">Preview</h3>
+          <div id="preview-box" class="h-32 rounded-xl bg-gradient-to-r from-[#DC143C] via-[#FFB347] to-[#A00021] mb-4"></div>
+          <div class="bg-gray-100 p-4 rounded-lg">
+            <p class="text-sm font-mono text-gray-700">CSS Class:</p>
+            <code id="css-output" class="text-xs text-gray-800 break-all">
+              bg-gradient-to-r from-[#DC143C] via-[#FFB347] to-[#A00021]
+            </code>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Component Examples -->
+    <section>
+      <h2 class="text-2xl font-semibold mb-6 text-gray-700">Component Examples</h2>
+      <div class="space-y-6">
+        <!-- Button Example -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <h3 class="text-lg font-semibold mb-4 text-gray-700">Button Styles</h3>
+          <div class="flex flex-wrap gap-4">
+            <button class="bg-gradient-to-r from-[#FF8C00] to-[#FFB347] text-white px-6 py-3 rounded-xl font-semibold hover:from-[#FF7F00] hover:to-[#FFA500] transition-all shadow-md hover:shadow-lg transform hover:scale-105">
+              Primary Button
+            </button>
+            <button class="bg-[#DC143C] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#C41E3A] transition-all shadow-md">
+              Red Button
+            </button>
+            <button class="bg-[#A00021] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#8B0018] transition-all shadow-md">
+              Dark Red Button
+            </button>
+          </div>
+        </div>
+        
+        <!-- Navbar Example -->
+        <div class="bg-gradient-to-r from-[#DC143C] via-[#C41E3A] to-[#DC143C] text-white rounded-xl shadow-lg p-6">
+          <h3 class="text-lg font-semibold mb-4">Navbar Style</h3>
+          <div class="flex items-center justify-between">
+            <div class="text-xl font-bold">ShriSolve</div>
+            <div class="flex gap-4">
+              <a href="#" class="hover:text-[#FFB347] transition-colors">Home</a>
+              <a href="#" class="hover:text-[#FFB347] transition-colors">About</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<script>
+  // Color picker functionality
+  const color1 = document.getElementById('color1');
+  const color1Text = document.getElementById('color1-text');
+  const color2 = document.getElementById('color2');
+  const color2Text = document.getElementById('color2-text');
+  const color3 = document.getElementById('color3');
+  const color3Text = document.getElementById('color3-text');
+  const previewBox = document.getElementById('preview-box');
+  const cssOutput = document.getElementById('css-output');
+  
+  function updatePreview() {
+    const c1 = color1.value;
+    const c2 = color2.value;
+    const c3 = color3.value;
+    
+    previewBox.style.background = `linear-gradient(to right, ${c1}, ${c2}, ${c3})`;
+    cssOutput.textContent = `bg-gradient-to-r from-[${c1}] via-[${c2}] to-[${c3}]`;
+  }
+  
+  color1.addEventListener('input', (e) => {
+    color1Text.value = e.target.value.toUpperCase();
+    updatePreview();
+  });
+  
+  color1Text.addEventListener('input', (e) => {
+    if (/^#[0-9A-F]{6}$/i.test(e.target.value)) {
+      color1.value = e.target.value;
+      updatePreview();
+    }
+  });
+  
+  color2.addEventListener('input', (e) => {
+    color2Text.value = e.target.value.toUpperCase();
+    updatePreview();
+  });
+  
+  color2Text.addEventListener('input', (e) => {
+    if (/^#[0-9A-F]{6}$/i.test(e.target.value)) {
+      color2.value = e.target.value;
+      updatePreview();
+    }
+  });
+  
+  color3.addEventListener('input', (e) => {
+    color3Text.value = e.target.value.toUpperCase();
+    updatePreview();
+  });
+  
+  color3Text.addEventListener('input', (e) => {
+    if (/^#[0-9A-F]{6}$/i.test(e.target.value)) {
+      color3.value = e.target.value;
+      updatePreview();
+    }
+  });
+</script>
+

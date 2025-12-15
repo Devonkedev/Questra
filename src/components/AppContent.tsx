@@ -50,7 +50,7 @@ export default function AppContent() {
 
         {/* Browse Doubts Card */}
         <a href="/doubts" className="bg-white rounded-2xl shadow-lg hover:shadow-xl p-8 text-center transition-all transform hover:-translate-y-1 border border-gray-100 group">
-          <div className="w-16 h-16 bg-gradient-to-br from-[#FF8C00] to-[#FFB347] rounded-full flex items-center justify-center mx-auto mb-4 shadow-md group-hover:scale-110 transition-transform">
+          <div className="w-16 h-16 bg-gradient-to-br from-[#FFA500] to-[#FFD700] rounded-full flex items-center justify-center mx-auto mb-4 shadow-md group-hover:scale-110 transition-transform">
             <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
             </svg>
@@ -77,7 +77,7 @@ export default function AppContent() {
         {/* Upload Card (for teachers) */}
         {userData?.role === 'teacher' && (
           <a href="/upload" className="bg-white rounded-2xl shadow-lg hover:shadow-xl p-8 text-center transition-all transform hover:-translate-y-1 border border-gray-100 group">
-            <div className="w-16 h-16 bg-gradient-to-br from-[#FF8C00] to-[#FFB347] rounded-full flex items-center justify-center mx-auto mb-4 shadow-md group-hover:scale-110 transition-transform">
+            <div className="w-16 h-16 bg-gradient-to-br from-[#FFA500] to-[#FFD700] rounded-full flex items-center justify-center mx-auto mb-4 shadow-md group-hover:scale-110 transition-transform">
               <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
               </svg>
@@ -106,7 +106,7 @@ export default function AppContent() {
       </div>
 
       {userData && (
-        <div className="bg-gradient-to-r from-[#FFB347] via-[#FF8C00] to-[#FFB347] rounded-2xl p-6 text-center">
+        <div className="bg-gradient-to-r from-[#FFD700] via-[#FFA500] to-[#FFD700] rounded-2xl p-6 text-center">
           <p className="text-white text-lg font-semibold">
             Welcome back, {userData.name || userData.email}!
           </p>

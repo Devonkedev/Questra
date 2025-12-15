@@ -139,7 +139,7 @@ export default function NotesList({ initialNotes }: Props) {
                 href={note.fileURL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block w-full text-center bg-[#F7C548] text-[#A00021] px-6 py-2 rounded-xl font-semibold hover:bg-[#F7C548]/90 transition-colors"
+                className="inline-block w-full text-center bg-[#FFD700] text-[#A00021] px-6 py-2 rounded-xl font-semibold hover:bg-[#FFD700]/90 transition-colors"
               >
                 Download
               </a>

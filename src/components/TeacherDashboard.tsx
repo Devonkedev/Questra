@@ -109,7 +109,7 @@ export default function TeacherDashboard({ initialQuestions }: Props) {
                       <span className="px-3 py-1 bg-[#A00021] text-white text-sm font-semibold rounded-lg">
                         {q.subject}
                       </span>
-                      <span className="px-3 py-1 bg-[#F7C548] text-[#A00021] text-sm font-semibold rounded-lg">
+                      <span className="px-3 py-1 bg-[#FFD700] text-[#A00021] text-sm font-semibold rounded-lg">
                         {q.topic}
                       </span>
                       <span className={`px-3 py-1 text-sm font-semibold rounded-lg ${
@@ -141,7 +141,7 @@ export default function TeacherDashboard({ initialQuestions }: Props) {
                           href={url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-[#A00021] hover:text-[#F7C548] text-sm underline"
+                          className="text-[#A00021] hover:text-[#FFD700] text-sm underline"
                         >
                           View File {idx + 1}
                         </a>
@@ -168,7 +168,7 @@ export default function TeacherDashboard({ initialQuestions }: Props) {
         <div className="flex flex-wrap gap-4">
           <a
             href="/upload"
-            className="bg-[#F7C548] text-[#A00021] px-6 py-3 rounded-xl font-semibold hover:bg-[#F7C548]/90 transition-colors"
+            className="bg-[#FFD700] text-[#A00021] px-6 py-3 rounded-xl font-semibold hover:bg-[#FFD700]/90 transition-colors"
           >
             Upload Resource
           </a>

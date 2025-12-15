@@ -128,7 +128,7 @@ export default function DoubtDetail({ question, initialReplies }: Props) {
               <span className="px-3 py-1 bg-[#A00021] text-white text-sm font-semibold rounded-lg">
                 {question.subject}
               </span>
-              <span className="px-3 py-1 bg-[#F7C548] text-[#A00021] text-sm font-semibold rounded-lg">
+              <span className="px-3 py-1 bg-[#FFD700] text-[#A00021] text-sm font-semibold rounded-lg">
                 {question.topic}
               </span>
               <span className={`px-3 py-1 text-sm font-semibold rounded-lg ${
@@ -160,7 +160,7 @@ export default function DoubtDetail({ question, initialReplies }: Props) {
                   href={url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[#A00021] hover:text-[#F7C548] text-sm underline"
+                  className="text-[#A00021] hover:text-[#FFD700] text-sm underline"
                 >
                   View File {idx + 1}
                 </a>
@@ -181,7 +181,7 @@ export default function DoubtDetail({ question, initialReplies }: Props) {
         ) : (
           <div className="space-y-4">
             {replies.map((reply) => (
-              <div key={reply.id} className="bg-white rounded-xl shadow-md p-5 border-l-4 border-[#F7C548]">
+              <div key={reply.id} className="bg-white rounded-xl shadow-md p-5 border-l-4 border-[#FFD700]">
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
@@ -215,7 +215,7 @@ export default function DoubtDetail({ question, initialReplies }: Props) {
                       href={reply.fileURL}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[#A00021] hover:text-[#F7C548] text-sm font-semibold underline"
+                      className="text-[#A00021] hover:text-[#FFD700] text-sm font-semibold underline"
                     >
                       View Attachment
                     </a>
