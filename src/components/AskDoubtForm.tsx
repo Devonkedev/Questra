@@ -6,9 +6,9 @@ import { getAuthInstance } from '../lib/firebase';
 import { getCurrentUserData } from '../lib/auth';
 
 const topics = {
-  Physics: ['Mechanics', 'Thermodynamics', 'Optics', 'Electromagnetism', 'Modern Physics'],
-  Math: ['Algebra', 'Calculus', 'Geometry', 'Trigonometry', 'Statistics'],
-  Chemistry: ['Organic', 'Inorganic', 'Physical', 'Biochemistry', 'Analytical']
+  Physics: ['Measurements & Uncertainties', 'Mechanics', 'Circular Motion & Gravitation', 'Thermal Physics', 'Waves', 'Electricity & Magnetism', 'Atomic, Nuclear & Particle Physics', 'Energy Production'],
+  Math: ['Numbers & Algebra', 'Functions', 'Calculus', 'Geometry & Trigonometry', 'Statistics & Probability'],
+  Chemistry: ['Measurement & Data Processing', 'Stoichiometry', 'Atomic Structure', 'Chemical Bonding & Structure', 'Enthalpies', "Rate of Reaction", "Equilibrium", "Acids & Bases", "Redox Reactions", "Organic Chemistry"]
 };
 
 export default function AskDoubtForm() {
