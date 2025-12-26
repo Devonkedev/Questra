@@ -1,7 +1,5 @@
 # ShriSolve
 
-**Where curiosity meets clarity.**
-
 A student-teacher doubt-solving platform for TSRS Moulsari with structured subjects, anonymous questioning, teacher verification, and resource uploads.
 
 ## 🚀 Features
