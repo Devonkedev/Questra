@@ -1,7 +1,5 @@
 # ShriSolve
 
-**Where curiosity meets clarity.**
-
 A student-teacher doubt-solving platform for TSRS Moulsari with structured subjects, anonymous questioning, teacher verification, and resource uploads.
 
 ## 🚀 Features
@@ -25,13 +23,7 @@ A student-teacher doubt-solving platform for TSRS Moulsari with structured subje
 
 - **Frontend**: Astro + React + TailwindCSS
 - **Backend**: Firebase (Auth + Firestore + Storage)
-- **Styling**: TailwindCSS with TSRS color palette
-
-## 🎨 Branding
-
-- **Maroon**: `#A00021`
-- **Gold**: `#F7C548`
-- **Cream/Off-white**: `#F9F6F2`
+- **Styling**: TailwindCSS with TSRS color 
 
 ## 📦 Installation
 
