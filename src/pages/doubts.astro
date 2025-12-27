@@ -15,6 +15,12 @@ const questions = await getQuestions({}, 50);
       <div class="text-center mb-8">
         <h1 class="text-4xl font-bold text-[#A00021] mb-2">All Doubts</h1>
         <p class="text-gray-600">Browse and answer questions from students</p>
+        <a 
+          href="/ask" 
+          class="inline-block mt-4 bg-gradient-to-r from-[#FFD700] to-[#FFA500] text-white px-6 py-3 rounded-xl font-bold hover:from-[#FFB300] hover:to-[#FF9500] transition-all shadow-lg"
+        >
+          + Ask a Doubt
+        </a>
       </div>
       
       <DoubtsList client:load initialQuestions={questions} />

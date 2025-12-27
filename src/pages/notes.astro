@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import { getNotes } from '../lib/firestore';
 import NotesList from '../components/NotesList';
 import AuthGate from '../components/AuthGate';
+import UploadButton from '../components/UploadButton';
 
 // Get initial notes (limited for performance)
 const notes = await getNotes({}, 50);
@@ -14,6 +15,7 @@ const notes = await getNotes({}, 50);
       <div class="text-center mb-8">
         <h1 class="text-4xl font-bold text-[#A00021] mb-2">Study Resources</h1>
         <p class="text-gray-600">Browse and download teacher-uploaded notes and materials</p>
+        <UploadButton client:load />
       </div>
       
       <NotesList client:load initialNotes={notes} />
