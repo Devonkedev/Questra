@@ -1,12 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { getNotes } from '../lib/firestore';
 import NotesList from '../components/NotesList';
 import AuthGate from '../components/AuthGate';
 import UploadButton from '../components/UploadButton';
-
-// Get initial notes (limited for performance)
-const notes = await getNotes({}, 50);
 ---
 
 <Layout title="Notes">
@@ -18,7 +14,7 @@ const notes = await getNotes({}, 50);
         <UploadButton client:load />
       </div>
       
-      <NotesList client:load initialNotes={notes} />
+      <NotesList client:load initialNotes={[]} />
     </div>
   </AuthGate>
 </Layout>

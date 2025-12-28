@@ -17,56 +17,49 @@ interface Props {
   initialNotes: Note[];
 }
 
-export default function NotesList({ initialNotes }: Props) {
-  const [notes, setNotes] = useState<Note[]>(initialNotes);
+export default function NotesList({ initialNotes = [] }: Props) {
+  const [allNotes, setAllNotes] = useState<Note[]>([]);
   const [filter, setFilter] = useState({ subject: '' });
   const [sortBy, setSortBy] = useState<'newest' | 'oldest'>('newest');
-  const [loading, setLoading] = useState(false);
-  const [hasInitialLoad, setHasInitialLoad] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // Memoize sorted notes from initial data
-  const sortedInitialNotes = useMemo(() => {
-    if (!hasInitialLoad && initialNotes.length > 0) {
-      return [...initialNotes].sort((a, b) => {
-        const dateA = new Date(a.createdAt).getTime();
-        const dateB = new Date(b.createdAt).getTime();
-        return sortBy === 'newest' ? dateB - dateA : dateA - dateB;
-      });
-    }
-    return [];
-  }, [initialNotes, sortBy, hasInitialLoad]);
-
+  // Load all notes on mount
   useEffect(() => {
-    // Skip initial load if we have initialNotes and no filter
-    if (!hasInitialLoad && initialNotes.length > 0 && !filter.subject) {
-      setHasInitialLoad(true);
-      if (sortedInitialNotes.length > 0) {
-        setNotes(sortedInitialNotes);
-      }
-      return;
-    }
-
-    const loadNotes = async () => {
+    const loadAllNotes = async () => {
       setLoading(true);
       try {
-        const filteredNotes = await getNotes(filter, 50);
-        // Sort notes
-        const sorted = [...filteredNotes].sort((a, b) => {
-          const dateA = new Date(a.createdAt).getTime();
-          const dateB = new Date(b.createdAt).getTime();
-          return sortBy === 'newest' ? dateB - dateA : dateA - dateB;
-        });
-        setNotes(sorted);
+        const fetchedNotes = await getNotes({}, 50);
+        setAllNotes(fetchedNotes || []);
       } catch (error) {
         console.error('Error loading notes:', error);
+        setAllNotes([]);
       } finally {
         setLoading(false);
       }
     };
 
-    loadNotes();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filter.subject, sortBy]);
+    loadAllNotes();
+  }, []);
+
+  // Filter and sort notes based on current settings
+  const notes = useMemo(() => {
+    let filtered = allNotes;
+    
+    // Apply subject filter
+    if (filter.subject) {
+      filtered = filtered.filter(note => note.subject === filter.subject);
+    }
+    
+    // Sort notes
+    if (filtered.length === 0) return [];
+    
+    return [...filtered].sort((a, b) => {
+      const dateA = new Date(a.createdAt).getTime();
+      const dateB = new Date(b.createdAt).getTime();
+      if (isNaN(dateA) || isNaN(dateB)) return 0;
+      return sortBy === 'newest' ? dateB - dateA : dateA - dateB;
+    });
+  }, [allNotes, filter.subject, sortBy]);
 
   const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat('en-US', {

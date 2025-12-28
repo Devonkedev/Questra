@@ -18,40 +18,48 @@ interface Props {
   initialQuestions: Question[];
 }
 
-export default function DoubtsList({ initialQuestions }: Props) {
-  const [questions, setQuestions] = useState<Question[]>(initialQuestions);
+export default function DoubtsList({ initialQuestions = [] }: Props) {
+  const [allQuestions, setAllQuestions] = useState<Question[]>([]);
   const [filters, setFilters] = useState({
     subject: '',
     status: ''
   });
-  const [loading, setLoading] = useState(false);
-  const [hasInitialLoad, setHasInitialLoad] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // Memoize filter changes to prevent unnecessary re-renders
-  const filterKey = useMemo(() => `${filters.subject}-${filters.status}`, [filters.subject, filters.status]);
-
+  // Load all questions on mount
   useEffect(() => {
-    // Skip initial load if we have initialQuestions and filters haven't changed
-    if (!hasInitialLoad && initialQuestions.length > 0 && !filters.subject && !filters.status) {
-      setHasInitialLoad(true);
-      return;
-    }
-
-    const loadQuestions = async () => {
+    const loadAllQuestions = async () => {
       setLoading(true);
       try {
-        const filteredQuestions = await getQuestions(filters, 50);
-        setQuestions(filteredQuestions);
+        const fetchedQuestions = await getQuestions({}, 50);
+        setAllQuestions(fetchedQuestions || []);
       } catch (error) {
         console.error('Error loading questions:', error);
+        setAllQuestions([]);
       } finally {
         setLoading(false);
       }
     };
 
-    loadQuestions();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterKey]);
+    loadAllQuestions();
+  }, []);
+
+  // Filter questions based on current filters
+  const questions = useMemo(() => {
+    let filtered = allQuestions;
+    
+    // Apply subject filter
+    if (filters.subject) {
+      filtered = filtered.filter(q => q.subject === filters.subject);
+    }
+    
+    // Apply status filter
+    if (filters.status) {
+      filtered = filtered.filter(q => q.status === filters.status);
+    }
+    
+    return filtered;
+  }, [allQuestions, filters.subject, filters.status]);
 
   return (
     <div>

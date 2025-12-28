@@ -167,24 +167,71 @@ export async function verifyReply(questionId, replyId) {
 export async function getNotes(filters = {}, maxResults = 50) {
   try {
     const db = await getDbInstance();
-    if (!db) return [];
+    if (!db) {
+      console.log('getNotes: No db instance');
+      return [];
+    }
     
-    // Build query with filters
-    const constraints = [orderBy('createdAt', 'desc'), limit(maxResults)];
+    console.log('getNotes: Filters:', filters);
+    
+    // Build query with filters - where clauses must come before orderBy
+    const constraints = [];
     
     if (filters.subject) {
-      constraints.unshift(where('subject', '==', filters.subject));
+      console.log('getNotes: Adding subject filter:', filters.subject);
+      constraints.push(where('subject', '==', filters.subject));
     }
+    
+    // Always order by createdAt and limit results
+    constraints.push(orderBy('createdAt', 'desc'));
+    constraints.push(limit(maxResults));
+    
+    console.log('getNotes: Query constraints:', constraints.length);
     
     const q = query(collection(db, 'notes'), ...constraints);
     const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-      createdAt: doc.data().createdAt?.toDate()
-    }));
+    
+    console.log('getNotes: Query returned', querySnapshot.docs.length, 'documents');
+    
+    const notes = querySnapshot.docs.map(doc => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        ...data,
+        createdAt: data.createdAt?.toDate()
+      };
+    });
+    
+    console.log('getNotes: Mapped notes:', notes.length);
+    if (notes.length > 0) {
+      console.log('getNotes: Sample note subjects:', notes.slice(0, 3).map(n => n.subject));
+    }
+    
+    // Additional client-side filter to ensure only the selected subject is shown
+    if (filters.subject) {
+      const filtered = notes.filter(note => {
+        const matches = note.subject === filters.subject;
+        if (!matches) {
+          console.log('getNotes: Filtering out note - subject mismatch:', note.subject, '!==', filters.subject);
+        }
+        return matches;
+      });
+      console.log('getNotes: After client-side filter:', filtered.length, 'notes');
+      return filtered;
+    }
+    
+    return notes;
   } catch (error) {
     console.error('Error getting notes:', error);
+    console.error('Error details:', {
+      code: error.code,
+      message: error.message,
+      filters
+    });
+    // If it's an index error, provide helpful message
+    if (error.code === 'failed-precondition') {
+      console.warn('Firestore index required. Check Firebase Console for index creation link.');
+    }
     return [];
   }
 }
