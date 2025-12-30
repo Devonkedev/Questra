@@ -157,20 +157,32 @@ export async function verifyReply(questionId, replyId) {
     const db = await getDbInstance();
     if (!db) return { success: false, error: 'Firestore is not initialized' };
     
+    console.log('Verifying reply:', { questionId, replyId });
+    
     // Mark reply as teacher verified
     await updateDoc(
       doc(db, 'questions', questionId, 'replies', replyId),
       { isTeacherVerified: true }
     );
     
+    console.log('Reply verified, updating question status to answered');
+    
     // Update question status to answered only after teacher verification
     await updateDoc(doc(db, 'questions', questionId), {
       status: 'answered'
     });
     
+    console.log('Question status updated to answered');
+    
     return { success: true };
   } catch (error) {
     console.error('Error verifying reply:', error);
+    console.error('Error details:', {
+      code: error.code,
+      message: error.message,
+      questionId,
+      replyId
+    });
     return { success: false, error: error.message };
   }
 }

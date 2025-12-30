@@ -147,18 +147,32 @@ export default function DoubtDetail({ question, initialReplies = [] }: Props) {
     try {
       const result = await verifyReply(questionData.id, replyId);
       if (result.success) {
+        setMessage({ type: 'success', text: 'Reply verified! Question marked as answered.' });
+        
         // Reload replies
         const newReplies = await getReplies(questionData.id);
         setReplies(newReplies);
         
-        // Update question status to answered
-        setQuestionData({
-          ...questionData,
-          status: 'answered'
-        });
+        // Reload question data to get updated status
+        const { getQuestion } = await import('../lib/firestore');
+        const updatedQuestion = await getQuestion(questionData.id);
+        if (updatedQuestion) {
+          console.log('Question status updated:', updatedQuestion.status);
+          setQuestionData(updatedQuestion);
+        } else {
+          // Fallback: update status locally
+          console.log('Using fallback: updating status locally');
+          setQuestionData({
+            ...questionData,
+            status: 'answered'
+          });
+        }
+      } else {
+        setMessage({ type: 'error', text: result.error || 'Failed to verify reply' });
       }
     } catch (error) {
       console.error('Error verifying reply:', error);
+      setMessage({ type: 'error', text: 'An error occurred while verifying the reply' });
     }
   };
 
