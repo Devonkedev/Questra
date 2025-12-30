@@ -3,7 +3,6 @@ import { getReplies, addReply, verifyReply } from '../lib/firestore';
 import { uploadFile } from '../lib/storage';
 import { getAuthInstance } from '../lib/firebase';
 import { getCurrentUserData } from '../lib/auth';
-import ReplyCard from './ReplyCard.astro';
 
 interface Reply {
   id: string;
@@ -26,17 +25,48 @@ interface Question {
 }
 
 interface Props {
-  question: Question;
-  initialReplies: Reply[];
+  question: Question | { id: string };
+  initialReplies?: Reply[];
 }
 
-export default function DoubtDetail({ question, initialReplies }: Props) {
+export default function DoubtDetail({ question, initialReplies = [] }: Props) {
+  const [questionData, setQuestionData] = useState<Question | null>(
+    'subject' in question ? question : null
+  );
   const [replies, setReplies] = useState<Reply[]>(initialReplies);
   const [replyText, setReplyText] = useState('');
   const [replyFile, setReplyFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
+  const [loadingData, setLoadingData] = useState(true);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [userRole, setUserRole] = useState<string | null>(null);
+
+  // Load question and replies on mount
+  useEffect(() => {
+    const loadData = async () => {
+      if (!question.id) return;
+      
+      setLoadingData(true);
+      try {
+        const { getQuestion, getReplies } = await import('../lib/firestore');
+        const [questionData, repliesData] = await Promise.all([
+          getQuestion(question.id),
+          getReplies(question.id)
+        ]);
+        
+        if (questionData) {
+          setQuestionData(questionData);
+        }
+        setReplies(repliesData || []);
+      } catch (error) {
+        console.error('Error loading question data:', error);
+      } finally {
+        setLoadingData(false);
+      }
+    };
+
+    loadData();
+  }, [question.id]);
 
   useEffect(() => {
     // Check user role
@@ -63,17 +93,32 @@ export default function DoubtDetail({ question, initialReplies }: Props) {
         return;
       }
 
+      // Get user's name/email for display
+      const userData = await getCurrentUserData();
+      const repliedByName = userData?.name || userData?.email || user.email || user.displayName || 'Anonymous';
+
       let fileURL = '';
       if (replyFile) {
         const uploadResult = await uploadFile(replyFile, `replies/${Date.now()}_${replyFile.name}`);
         if (uploadResult.success) {
           fileURL = uploadResult.url;
+        } else {
+          setMessage({ type: 'error', text: 'Failed to upload file. Please try again.' });
+          setLoading(false);
+          return;
         }
       }
 
-      const result = await addReply(question.id, {
+      if (!questionData) {
+        setMessage({ type: 'error', text: 'Question not found' });
+        setLoading(false);
+        return;
+      }
+
+      const result = await addReply(questionData.id, {
         replyText,
-        repliedBy: user.uid,
+        repliedBy: repliedByName,
+        repliedById: user.uid,
         fileURL: fileURL || undefined
       });
 
@@ -83,12 +128,13 @@ export default function DoubtDetail({ question, initialReplies }: Props) {
         setReplyFile(null);
         
         // Reload replies
-        const newReplies = await getReplies(question.id);
+        const newReplies = await getReplies(questionData.id);
         setReplies(newReplies);
       } else {
         setMessage({ type: 'error', text: result.error || 'Failed to post reply' });
       }
     } catch (error: any) {
+      console.error('Error submitting reply:', error);
       setMessage({ type: 'error', text: error.message || 'An error occurred' });
     } finally {
       setLoading(false);
@@ -96,12 +142,20 @@ export default function DoubtDetail({ question, initialReplies }: Props) {
   };
 
   const handleVerifyReply = async (replyId: string) => {
+    if (!questionData) return;
+    
     try {
-      const result = await verifyReply(question.id, replyId);
+      const result = await verifyReply(questionData.id, replyId);
       if (result.success) {
         // Reload replies
-        const newReplies = await getReplies(question.id);
+        const newReplies = await getReplies(questionData.id);
         setReplies(newReplies);
+        
+        // Update question status to answered
+        setQuestionData({
+          ...questionData,
+          status: 'answered'
+        });
       }
     } catch (error) {
       console.error('Error verifying reply:', error);
@@ -118,6 +172,25 @@ export default function DoubtDetail({ question, initialReplies }: Props) {
     }).format(new Date(date));
   };
 
+  if (loadingData) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-gray-600">Loading question...</p>
+      </div>
+    );
+  }
+
+  if (!questionData) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-gray-600">Question not found.</p>
+        <a href="/doubts" className="text-[#A00021] hover:underline mt-4 inline-block">
+          Back to Doubts
+        </a>
+      </div>
+    );
+  }
+
   return (
     <div>
       {/* Question Card */}
@@ -126,35 +199,35 @@ export default function DoubtDetail({ question, initialReplies }: Props) {
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-2">
               <span className="px-3 py-1 bg-[#A00021] text-white text-sm font-semibold rounded-lg">
-                {question.subject}
+                {questionData.subject}
               </span>
               <span className="px-3 py-1 bg-[#FFD700] text-[#A00021] text-sm font-semibold rounded-lg">
-                {question.topic}
+                {questionData.topic}
               </span>
               <span className={`px-3 py-1 text-sm font-semibold rounded-lg ${
-                question.status === 'open'
+                questionData.status === 'open'
                   ? 'bg-green-100 text-green-800'
                   : 'bg-blue-100 text-blue-800'
               }`}>
-                {question.status === 'open' ? 'Open' : 'Answered'}
+                {questionData.status === 'open' ? 'Open' : 'Answered'}
               </span>
             </div>
             <p className="text-gray-600 text-sm mb-2">
-              Asked by: {question.askedBy === 'anonymous' ? 'Anonymous' : question.askedBy}
+              Asked by: {questionData.askedBy === 'anonymous' ? 'Anonymous' : questionData.askedBy}
             </p>
             <p className="text-gray-500 text-xs mb-4">
-              {formatDate(question.createdAt)}
+              {formatDate(questionData.createdAt)}
             </p>
           </div>
         </div>
         
-        <p className="text-gray-800 mb-4 leading-relaxed text-lg">{question.question}</p>
+        <p className="text-gray-800 mb-4 leading-relaxed text-lg">{questionData.question}</p>
         
-        {question.attachments && question.attachments.length > 0 && (
+        {questionData.attachments && questionData.attachments.length > 0 && (
           <div className="mb-4">
             <p className="text-sm font-semibold text-gray-700 mb-2">Attachments:</p>
             <div className="flex flex-wrap gap-2">
-              {question.attachments.map((url, idx) => (
+              {questionData.attachments.map((url, idx) => (
                 <a
                   key={idx}
                   href={url}
@@ -280,4 +353,5 @@ export default function DoubtDetail({ question, initialReplies }: Props) {
     </div>
   );
 }
+
 

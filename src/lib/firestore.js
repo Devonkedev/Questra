@@ -128,19 +128,22 @@ export async function addReply(questionId, replyData) {
   try {
     const db = await getDbInstance();
     if (!db) return { success: false, error: 'Firestore is not initialized' };
+    
+    const replyDoc = {
+      replyText: replyData.replyText,
+      repliedBy: replyData.repliedBy, // User's name/email
+      repliedById: replyData.repliedById || replyData.repliedBy, // User's UID for security
+      fileURL: replyData.fileURL || null,
+      timestamp: Timestamp.now(),
+      isTeacherVerified: false
+    };
+    
     const docRef = await addDoc(
       collection(db, 'questions', questionId, 'replies'),
-      {
-        ...replyData,
-        timestamp: Timestamp.now(),
-        isTeacherVerified: false
-      }
+      replyDoc
     );
     
-    // Update question status to answered
-    await updateDoc(doc(db, 'questions', questionId), {
-      status: 'answered'
-    });
+    // Don't update question status here - only mark as answered when teacher verifies
     
     return { success: true, id: docRef.id };
   } catch (error) {
@@ -153,10 +156,18 @@ export async function verifyReply(questionId, replyId) {
   try {
     const db = await getDbInstance();
     if (!db) return { success: false, error: 'Firestore is not initialized' };
+    
+    // Mark reply as teacher verified
     await updateDoc(
       doc(db, 'questions', questionId, 'replies', replyId),
       { isTeacherVerified: true }
     );
+    
+    // Update question status to answered only after teacher verification
+    await updateDoc(doc(db, 'questions', questionId), {
+      status: 'answered'
+    });
+    
     return { success: true };
   } catch (error) {
     console.error('Error verifying reply:', error);

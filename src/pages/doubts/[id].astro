@@ -2,14 +2,13 @@
 export const prerender = false;
 
 import Layout from '../../layouts/Layout.astro';
-import ReplyCard from '../../components/ReplyCard.astro';
-import { getQuestion, getReplies } from '../../lib/firestore';
 import DoubtDetail from '../../components/DoubtDetail';
 import AuthGate from '../../components/AuthGate';
 
 const { id } = Astro.params;
-const question = await getQuestion(id);
-const replies = question ? await getReplies(id) : [];
+// Don't fetch server-side - Firebase doesn't work on server
+const question = { id };
+const replies = [];
 ---
 
 <Layout title="Doubt Details">
