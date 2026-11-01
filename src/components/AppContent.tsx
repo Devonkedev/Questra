@@ -30,7 +30,7 @@ export default function AppContent() {
   return (
     <div className="container mx-auto px-4 py-12">
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-[#A00021] mb-2">Welcome to ShriSolve</h1>
+        <h1 className="text-4xl font-bold text-[#A00021] mb-2">Welcome to Questra</h1>
         <p className="text-gray-600 text-lg">Your learning hub for asking doubts and accessing resources</p>
       </div>
       

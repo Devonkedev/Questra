@@ -1,6 +1,6 @@
-# ShriSolve
+# Questra
 
-A student-teacher doubt-solving platform for TSRS Moulsari with structured subjects, anonymous questioning, teacher verification, and resource uploads.
+A student-teacher doubt-solving platform with structured subjects, anonymous questioning, teacher verification, and resource uploads.
 
 ## 🚀 Features
 
@@ -23,14 +23,14 @@ A student-teacher doubt-solving platform for TSRS Moulsari with structured subje
 
 - **Frontend**: Astro + React + TailwindCSS
 - **Backend**: Firebase (Auth + Firestore + Storage)
-- **Styling**: TailwindCSS with TSRS color 
+- **Styling**: TailwindCSS
 
 ## 📦 Installation
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
-cd ShriSolve
+git clone <repository-url> Questra
+cd Questra
 ```
 
 2. Install dependencies:
@@ -124,7 +124,7 @@ service firebase.storage {
 ## 📁 Project Structure
 
 ```
-ShriSolve/
+Questra/
 ├── src/
 │   ├── components/       # Reusable components
 │   │   ├── NavBar.astro
@@ -185,14 +185,6 @@ The app can be deployed to:
 - **Netlify**: Connect your repository and set build command to `npm run build`
 - **Firebase Hosting**: `firebase deploy`
 
-## 📝 License
-
-This project is created for TSRS Moulsari.
-
 ## 🤝 Contributing
 
-This is a private project for TSRS Moulsari. For questions or issues, please contact the project maintainers.
-
----
-
-Built with ❤️ for TSRS Moulsari
+This is a private project. For questions or issues, please contact the project maintainers.
