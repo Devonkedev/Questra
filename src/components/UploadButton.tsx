@@ -25,7 +25,7 @@ export default function UploadButton() {
   return (
     <a 
       href="/upload" 
-      className="inline-block mt-4 bg-gradient-to-r from-[#FFD700] to-[#FFA500] text-white px-6 py-3 rounded-xl font-bold hover:from-[#FFB300] hover:to-[#FF9500] transition-all shadow-lg"
+      className="inline-block mt-4 bg-gradient-to-r from-[#5EEAD4] to-[#2DD4BF] text-[#1E1B4B] px-6 py-3 rounded-xl font-bold hover:from-[#2DD4BF] hover:to-[#14B8A6] transition-all shadow-lg"
     >
       + Upload Notes
     </a>

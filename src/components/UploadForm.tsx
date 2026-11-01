@@ -95,7 +95,7 @@ export default function UploadForm() {
         </div>
         <h2 className="text-xl font-bold text-gray-800 mb-2">Access Restricted</h2>
         <p className="text-gray-600">Only teachers can upload notes and resources.</p>
-        <a href="/notes" className="inline-block mt-4 text-[#A00021] font-semibold hover:underline">
+        <a href="/notes" className="inline-block mt-4 text-[#312E81] font-semibold hover:underline">
           ← Back to Notes
         </a>
       </div>
@@ -126,7 +126,7 @@ export default function UploadForm() {
             value={formData.title}
             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#A00021] focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#312E81] focus:border-transparent"
             placeholder="Enter resource title"
           />
         </div>
@@ -151,7 +151,7 @@ export default function UploadForm() {
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             required
             rows={4}
-            className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#A00021] focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#312E81] focus:border-transparent"
             placeholder="Enter resource description"
           />
         </div>
@@ -164,14 +164,14 @@ export default function UploadForm() {
             type="file"
             onChange={(e) => setFormData({ ...formData, file: e.target.files?.[0] || null })}
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#A00021] focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#312E81] focus:border-transparent"
           />
         </div>
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-[#A00021] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#A00021]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-[#312E81] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#312E81]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {loading ? 'Uploading...' : 'Upload Resource'}
         </button>

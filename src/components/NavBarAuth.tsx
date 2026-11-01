@@ -50,7 +50,7 @@ export default function NavBarAuth() {
 
   if (loading) {
     return (
-      <a href="/login" className="bg-gradient-to-r from-[#FFA500] to-[#FFD700] text-white px-4 py-2 rounded-lg font-semibold hover:from-[#FF9500] hover:to-[#FFB300] transition-all shadow-md hover:shadow-lg transform hover:scale-105">
+      <a href="/login" className="bg-gradient-to-r from-[#2DD4BF] to-[#5EEAD4] text-[#1E1B4B] px-4 py-2 rounded-lg font-semibold hover:from-[#14B8A6] hover:to-[#2DD4BF] transition-all shadow-md hover:shadow-lg transform hover:scale-105">
         Login
       </a>
     );
@@ -60,7 +60,7 @@ export default function NavBarAuth() {
     return (
       <button
         onClick={handleLogout}
-        className="bg-gradient-to-r from-[#FFA500] to-[#FFD700] text-white px-4 py-2 rounded-lg font-semibold hover:from-[#FF9500] hover:to-[#FFB300] transition-all shadow-md hover:shadow-lg transform hover:scale-105"
+        className="bg-gradient-to-r from-[#2DD4BF] to-[#5EEAD4] text-[#1E1B4B] px-4 py-2 rounded-lg font-semibold hover:from-[#14B8A6] hover:to-[#2DD4BF] transition-all shadow-md hover:shadow-lg transform hover:scale-105"
       >
         Logout
       </button>
@@ -68,7 +68,7 @@ export default function NavBarAuth() {
   }
 
   return (
-    <a href="/login" className="bg-gradient-to-r from-[#FFA500] to-[#FFD700] text-white px-4 py-2 rounded-lg font-semibold hover:from-[#FF9500] hover:to-[#FFB300] transition-all shadow-md hover:shadow-lg transform hover:scale-105">
+    <a href="/login" className="bg-gradient-to-r from-[#2DD4BF] to-[#5EEAD4] text-[#1E1B4B] px-4 py-2 rounded-lg font-semibold hover:from-[#14B8A6] hover:to-[#2DD4BF] transition-all shadow-md hover:shadow-lg transform hover:scale-105">
       Login
     </a>
   );

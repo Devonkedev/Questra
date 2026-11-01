@@ -198,7 +198,7 @@ export default function LoginForm() {
           onClick={() => setIsLogin(true)}
           className={`flex-1 py-2 rounded-xl font-semibold transition-colors ${
             isLogin
-              ? 'bg-[#A00021] text-white'
+              ? 'bg-[#312E81] text-white'
               : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
           }`}
         >
@@ -208,7 +208,7 @@ export default function LoginForm() {
           onClick={() => setIsLogin(false)}
           className={`flex-1 py-2 rounded-xl font-semibold transition-colors ${
             !isLogin
-              ? 'bg-[#A00021] text-white'
+              ? 'bg-[#312E81] text-white'
               : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
           }`}
         >
@@ -271,7 +271,7 @@ export default function LoginForm() {
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#A00021] focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#312E81] focus:border-transparent"
               placeholder="Enter your email"
             />
           </div>
@@ -280,7 +280,7 @@ export default function LoginForm() {
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 bg-[#A00021] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#A00021]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 bg-[#312E81] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#312E81]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'Sending...' : 'Send Reset Link'}
             </button>
@@ -308,7 +308,7 @@ export default function LoginForm() {
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               required={!isLogin}
-              className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#A00021] focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#312E81] focus:border-transparent"
               placeholder="Enter your name"
             />
           </div>
@@ -323,7 +323,7 @@ export default function LoginForm() {
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#A00021] focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#312E81] focus:border-transparent"
             placeholder="Enter your email"
           />
         </div>
@@ -337,7 +337,7 @@ export default function LoginForm() {
               <button
                 type="button"
                 onClick={() => setShowForgotPassword(true)}
-                className="text-sm text-[#A00021] hover:text-[#FFD700] font-semibold"
+                className="text-sm text-[#312E81] hover:text-[#4F46E5] font-semibold"
               >
                 Forgot password?
               </button>
@@ -348,7 +348,7 @@ export default function LoginForm() {
             value={formData.password}
             onChange={(e) => setFormData({ ...formData, password: e.target.value })}
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#A00021] focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#312E81] focus:border-transparent"
             placeholder="Enter your password"
           />
         </div>
@@ -362,7 +362,7 @@ export default function LoginForm() {
               value={formData.role}
               onChange={(e) => setFormData({ ...formData, role: e.target.value as 'student' | 'teacher' })}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#A00021] focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#312E81] focus:border-transparent"
             >
               <option value="student">Student</option>
               <option value="teacher">Teacher</option>
@@ -373,7 +373,7 @@ export default function LoginForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#A00021] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#A00021]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-[#312E81] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#312E81]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? 'Please wait...' : isLogin ? 'Login' : 'Sign Up'}
           </button>

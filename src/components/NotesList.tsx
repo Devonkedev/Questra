@@ -90,7 +90,7 @@ export default function NotesList({ initialNotes = [] }: Props) {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as 'newest' | 'oldest')}
-              className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#A00021] focus:border-transparent bg-white"
+              className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#312E81] focus:border-transparent bg-white"
             >
               <option value="newest">Newest First</option>
               <option value="oldest">Oldest First</option>
@@ -117,7 +117,7 @@ export default function NotesList({ initialNotes = [] }: Props) {
               <div className="flex items-start justify-between mb-4">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
-                    <span className="px-3 py-1 bg-[#A00021] text-white text-sm font-semibold rounded-lg">
+                    <span className="px-3 py-1 bg-[#312E81] text-white text-sm font-semibold rounded-lg">
                       {note.subject}
                     </span>
                     <span className="text-gray-500 text-xs">{formatDate(note.createdAt)}</span>
@@ -132,7 +132,7 @@ export default function NotesList({ initialNotes = [] }: Props) {
                 href={note.fileURL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block w-full text-center bg-[#FFD700] text-[#A00021] px-6 py-2 rounded-xl font-semibold hover:bg-[#FFD700]/90 transition-colors"
+                className="inline-block w-full text-center bg-[#5EEAD4] text-[#312E81] px-6 py-2 rounded-xl font-semibold hover:bg-[#5EEAD4]/90 transition-colors"
               >
                 Download
               </a>

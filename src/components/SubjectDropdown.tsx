@@ -14,7 +14,7 @@ export default function SubjectDropdown({ value, onChange, required = false }: S
       value={value}
       onChange={(e) => onChange(e.target.value)}
       required={required}
-      className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#A00021] focus:border-transparent bg-white"
+      className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#312E81] focus:border-transparent bg-white"
     >
       <option value="">Select Subject</option>
       {subjects.map((subject) => (

@@ -43,7 +43,7 @@ export default function NavBarLinksMobile() {
   // Show only Home for logged-out users
   if (!loading && !isLoggedIn) {
     return (
-      <a href="/" className="block py-2 hover:text-[#FFD700] transition-colors">Home</a>
+      <a href="/" className="block py-2 hover:text-[#5EEAD4] transition-colors">Home</a>
     );
   }
 
@@ -51,17 +51,17 @@ export default function NavBarLinksMobile() {
   if (!loading && isLoggedIn) {
     return (
       <>
-        <a href="/" className="block py-2 hover:text-[#FFD700] transition-colors">Home</a>
-        <a href="/notes" className="block py-2 hover:text-[#FFD700] transition-colors">Notes</a>
-        <a href="/doubts" className="block py-2 hover:text-[#FFD700] transition-colors">Doubts</a>
-        <a href="/ask" className="block py-2 hover:text-[#FFD700] transition-colors">Ask a Doubt</a>
+        <a href="/" className="block py-2 hover:text-[#5EEAD4] transition-colors">Home</a>
+        <a href="/notes" className="block py-2 hover:text-[#5EEAD4] transition-colors">Notes</a>
+        <a href="/doubts" className="block py-2 hover:text-[#5EEAD4] transition-colors">Doubts</a>
+        <a href="/ask" className="block py-2 hover:text-[#5EEAD4] transition-colors">Ask a Doubt</a>
       </>
     );
   }
 
   // Loading state - show minimal
   return (
-    <a href="/" className="block py-2 hover:text-[#FFD700] transition-colors">Home</a>
+    <a href="/" className="block py-2 hover:text-[#5EEAD4] transition-colors">Home</a>
   );
 }
 

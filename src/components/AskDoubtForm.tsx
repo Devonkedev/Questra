@@ -140,7 +140,7 @@ export default function AskDoubtForm() {
               value={formData.topic}
               onChange={(e) => setFormData({ ...formData, topic: e.target.value })}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#A00021] focus:border-transparent bg-white"
+              className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#312E81] focus:border-transparent bg-white"
             >
               <option value="">Select Topic</option>
               {availableTopics.map((topic) => (
@@ -161,7 +161,7 @@ export default function AskDoubtForm() {
             onChange={(e) => setFormData({ ...formData, question: e.target.value })}
             required
             rows={6}
-            className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#A00021] focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#312E81] focus:border-transparent"
             placeholder="Describe your doubt in detail..."
           />
         </div>
@@ -175,7 +175,7 @@ export default function AskDoubtForm() {
             multiple
             onChange={handleFileChange}
             accept="image/*,application/pdf,audio/*,video/*"
-            className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#A00021] focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#312E81] focus:border-transparent"
           />
           <p className="text-xs text-gray-500 mt-1">
             You can upload images, PDFs, audio, or video files
@@ -188,7 +188,7 @@ export default function AskDoubtForm() {
             id="anonymous"
             checked={formData.isAnonymous}
             onChange={(e) => setFormData({ ...formData, isAnonymous: e.target.checked })}
-            className="w-4 h-4 text-[#A00021] border-gray-300 rounded focus:ring-[#A00021]"
+            className="w-4 h-4 text-[#312E81] border-gray-300 rounded focus:ring-[#312E81]"
           />
           <label htmlFor="anonymous" className="ml-2 text-sm text-gray-700">
             Ask anonymously
@@ -198,7 +198,7 @@ export default function AskDoubtForm() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-[#A00021] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#A00021]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-[#312E81] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#312E81]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {loading ? 'Posting...' : 'Post Question'}
         </button>

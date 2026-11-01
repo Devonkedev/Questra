@@ -82,7 +82,7 @@ export default function DoubtsList({ initialQuestions = [] }: Props) {
             <select
               value={filters.status}
               onChange={(e) => setFilters({ ...filters, status: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#A00021] focus:border-transparent bg-white"
+              className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#312E81] focus:border-transparent bg-white"
             >
               <option value="">All</option>
               <option value="open">Open</option>
@@ -110,10 +110,10 @@ export default function DoubtsList({ initialQuestions = [] }: Props) {
               <div className="flex items-start justify-between mb-4">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
-                    <span className="px-3 py-1 bg-[#A00021] text-white text-sm font-semibold rounded-lg">
+                    <span className="px-3 py-1 bg-[#312E81] text-white text-sm font-semibold rounded-lg">
                       {q.subject}
                     </span>
-                    <span className="px-3 py-1 bg-[#FFD700] text-[#A00021] text-sm font-semibold rounded-lg">
+                    <span className="px-3 py-1 bg-[#5EEAD4] text-[#312E81] text-sm font-semibold rounded-lg">
                       {q.topic}
                     </span>
                     <span className={`px-3 py-1 text-sm font-semibold rounded-lg ${
@@ -145,7 +145,7 @@ export default function DoubtsList({ initialQuestions = [] }: Props) {
                         href={url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-[#A00021] hover:text-[#FFD700] text-sm underline"
+                        className="text-[#312E81] hover:text-[#4F46E5] text-sm underline"
                       >
                         View File {idx + 1}
                       </a>
@@ -156,7 +156,7 @@ export default function DoubtsList({ initialQuestions = [] }: Props) {
               
               <a
                 href={`/doubts/${q.id}`}
-                className="inline-block bg-[#A00021] text-white px-6 py-2 rounded-xl font-semibold hover:bg-[#A00021]/90 transition-colors"
+                className="inline-block bg-[#312E81] text-white px-6 py-2 rounded-xl font-semibold hover:bg-[#312E81]/90 transition-colors"
               >
                 View Details
               </a>

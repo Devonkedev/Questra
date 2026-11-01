@@ -54,7 +54,7 @@ export default function TeacherDashboard({ initialQuestions }: Props) {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div className="bg-white rounded-2xl shadow-md p-6">
           <h3 className="text-sm font-semibold text-gray-600 mb-2">Total Questions</h3>
-          <p className="text-3xl font-bold text-[#A00021]">{questions.length}</p>
+          <p className="text-3xl font-bold text-[#312E81]">{questions.length}</p>
         </div>
         <div className="bg-white rounded-2xl shadow-md p-6">
           <h3 className="text-sm font-semibold text-gray-600 mb-2">Open Questions</h3>
@@ -106,10 +106,10 @@ export default function TeacherDashboard({ initialQuestions }: Props) {
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <span className="px-3 py-1 bg-[#A00021] text-white text-sm font-semibold rounded-lg">
+                      <span className="px-3 py-1 bg-[#312E81] text-white text-sm font-semibold rounded-lg">
                         {q.subject}
                       </span>
-                      <span className="px-3 py-1 bg-[#FFD700] text-[#A00021] text-sm font-semibold rounded-lg">
+                      <span className="px-3 py-1 bg-[#5EEAD4] text-[#312E81] text-sm font-semibold rounded-lg">
                         {q.topic}
                       </span>
                       <span className={`px-3 py-1 text-sm font-semibold rounded-lg ${
@@ -141,7 +141,7 @@ export default function TeacherDashboard({ initialQuestions }: Props) {
                           href={url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-[#A00021] hover:text-[#FFD700] text-sm underline"
+                          className="text-[#312E81] hover:text-[#4F46E5] text-sm underline"
                         >
                           View File {idx + 1}
                         </a>
@@ -152,7 +152,7 @@ export default function TeacherDashboard({ initialQuestions }: Props) {
                 
                 <a
                   href={`/doubts/${q.id}`}
-                  className="inline-block bg-[#A00021] text-white px-6 py-2 rounded-xl font-semibold hover:bg-[#A00021]/90 transition-colors"
+                  className="inline-block bg-[#312E81] text-white px-6 py-2 rounded-xl font-semibold hover:bg-[#312E81]/90 transition-colors"
                 >
                   View & Reply
                 </a>
@@ -168,13 +168,13 @@ export default function TeacherDashboard({ initialQuestions }: Props) {
         <div className="flex flex-wrap gap-4">
           <a
             href="/upload"
-            className="bg-[#FFD700] text-[#A00021] px-6 py-3 rounded-xl font-semibold hover:bg-[#FFD700]/90 transition-colors"
+            className="bg-[#5EEAD4] text-[#312E81] px-6 py-3 rounded-xl font-semibold hover:bg-[#5EEAD4]/90 transition-colors"
           >
             Upload Resource
           </a>
           <a
             href="/doubts"
-            className="bg-[#A00021] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#A00021]/90 transition-colors"
+            className="bg-[#312E81] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#312E81]/90 transition-colors"
           >
             Browse All Doubts
           </a>

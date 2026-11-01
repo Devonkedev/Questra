@@ -43,7 +43,7 @@ export default function NavBarLinks() {
   // Show only Home for logged-out users
   if (!loading && !isLoggedIn) {
     return (
-      <a href="/" className="hover:text-[#FFD700] transition-colors mr-6">Home</a>
+      <a href="/" className="hover:text-[#5EEAD4] transition-colors mr-6">Home</a>
     );
   }
 
@@ -51,17 +51,17 @@ export default function NavBarLinks() {
   if (!loading && isLoggedIn) {
     return (
       <div className="flex items-center space-x-6 mr-6">
-        <a href="/" className="hover:text-[#FFD700] transition-colors">Home</a>
-        <a href="/notes" className="hover:text-[#FFD700] transition-colors">Notes</a>
-        <a href="/doubts" className="hover:text-[#FFD700] transition-colors">Doubts</a>
-        <a href="/ask" className="hover:text-[#FFD700] transition-colors">Ask a Doubt</a>
+        <a href="/" className="hover:text-[#5EEAD4] transition-colors">Home</a>
+        <a href="/notes" className="hover:text-[#5EEAD4] transition-colors">Notes</a>
+        <a href="/doubts" className="hover:text-[#5EEAD4] transition-colors">Doubts</a>
+        <a href="/ask" className="hover:text-[#5EEAD4] transition-colors">Ask a Doubt</a>
       </div>
     );
   }
 
   // Loading state - show minimal
   return (
-    <a href="/" className="hover:text-[#FFD700] transition-colors mr-6">Home</a>
+    <a href="/" className="hover:text-[#5EEAD4] transition-colors mr-6">Home</a>
   );
 }
 

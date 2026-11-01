@@ -10,46 +10,46 @@ import Layout from '../layouts/Layout.astro';
     <section class="mb-12">
       <h2 class="text-2xl font-semibold mb-6 text-gray-700">Current Colors</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Red Primary -->
+        <!-- Indigo Primary -->
         <div class="bg-white rounded-xl shadow-lg p-6">
-          <div class="h-24 w-full rounded-lg mb-4 bg-[#DC143C]"></div>
-          <p class="font-semibold text-gray-800">Primary Red</p>
-          <p class="text-sm text-gray-600 font-mono">#DC143C</p>
+          <div class="h-24 w-full rounded-lg mb-4 bg-[#4F46E5]"></div>
+          <p class="font-semibold text-gray-800">Primary Indigo</p>
+          <p class="text-sm text-gray-600 font-mono">#4F46E5</p>
         </div>
         
-        <!-- Dark Red -->
+        <!-- Dark Indigo -->
         <div class="bg-white rounded-xl shadow-lg p-6">
-          <div class="h-24 w-full rounded-lg mb-4 bg-[#C41E3A]"></div>
-          <p class="font-semibold text-gray-800">Dark Red</p>
-          <p class="text-sm text-gray-600 font-mono">#C41E3A</p>
+          <div class="h-24 w-full rounded-lg mb-4 bg-[#4338CA]"></div>
+          <p class="font-semibold text-gray-800">Dark Indigo</p>
+          <p class="text-sm text-gray-600 font-mono">#4338CA</p>
         </div>
         
-        <!-- Yellow/Orange -->
+        <!-- Light Teal -->
         <div class="bg-white rounded-xl shadow-lg p-6">
-          <div class="h-24 w-full rounded-lg mb-4 bg-[#FFB347]"></div>
-          <p class="font-semibold text-gray-800">Yellow/Orange</p>
-          <p class="text-sm text-gray-600 font-mono">#FFB347</p>
+          <div class="h-24 w-full rounded-lg mb-4 bg-[#5EEAD4]"></div>
+          <p class="font-semibold text-gray-800">Light Teal</p>
+          <p class="text-sm text-gray-600 font-mono">#5EEAD4</p>
         </div>
         
-        <!-- Orange -->
+        <!-- Teal -->
         <div class="bg-white rounded-xl shadow-lg p-6">
-          <div class="h-24 w-full rounded-lg mb-4 bg-[#FF8C00]"></div>
-          <p class="font-semibold text-gray-800">Orange</p>
-          <p class="text-sm text-gray-600 font-mono">#FF8C00</p>
+          <div class="h-24 w-full rounded-lg mb-4 bg-[#2DD4BF]"></div>
+          <p class="font-semibold text-gray-800">Teal</p>
+          <p class="text-sm text-gray-600 font-mono">#2DD4BF</p>
         </div>
         
-        <!-- Dark Red Accent -->
+        <!-- Deep Indigo Accent -->
         <div class="bg-white rounded-xl shadow-lg p-6">
-          <div class="h-24 w-full rounded-lg mb-4 bg-[#A00021]"></div>
-          <p class="font-semibold text-gray-800">Dark Red Accent</p>
-          <p class="text-sm text-gray-600 font-mono">#A00021</p>
+          <div class="h-24 w-full rounded-lg mb-4 bg-[#312E81]"></div>
+          <p class="font-semibold text-gray-800">Deep Indigo Accent</p>
+          <p class="text-sm text-gray-600 font-mono">#312E81</p>
         </div>
         
-        <!-- Yellow Accent -->
+        <!-- Teal Accent -->
         <div class="bg-white rounded-xl shadow-lg p-6">
-          <div class="h-24 w-full rounded-lg mb-4 bg-[#F7C548]"></div>
-          <p class="font-semibold text-gray-800">Yellow Accent</p>
-          <p class="text-sm text-gray-600 font-mono">#F7C548</p>
+          <div class="h-24 w-full rounded-lg mb-4 bg-[#5EEAD4]"></div>
+          <p class="font-semibold text-gray-800">Teal Accent</p>
+          <p class="text-sm text-gray-600 font-mono">#5EEAD4</p>
         </div>
       </div>
     </section>
@@ -58,10 +58,10 @@ import Layout from '../layouts/Layout.astro';
     <section class="mb-12">
       <h2 class="text-2xl font-semibold mb-6 text-gray-700">Gradient Examples</h2>
       <div class="space-y-4">
-        <div class="h-20 rounded-xl bg-gradient-to-r from-[#DC143C] via-[#C41E3A] to-[#DC143C]"></div>
-        <div class="h-20 rounded-xl bg-gradient-to-r from-[#FF8C00] to-[#FFB347]"></div>
-        <div class="h-20 rounded-xl bg-gradient-to-r from-[#FFB347] to-[#FF8C00]"></div>
-        <div class="h-20 rounded-xl bg-gradient-to-br from-[#DC143C] via-[#C41E3A] to-[#DC143C]"></div>
+        <div class="h-20 rounded-xl bg-gradient-to-r from-[#4F46E5] via-[#4338CA] to-[#4F46E5]"></div>
+        <div class="h-20 rounded-xl bg-gradient-to-r from-[#2DD4BF] to-[#5EEAD4]"></div>
+        <div class="h-20 rounded-xl bg-gradient-to-r from-[#5EEAD4] to-[#2DD4BF]"></div>
+        <div class="h-20 rounded-xl bg-gradient-to-br from-[#4F46E5] via-[#4338CA] to-[#4F46E5]"></div>
       </div>
     </section>
     
@@ -72,28 +72,28 @@ import Layout from '../layouts/Layout.astro';
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
           <div>
             <label class="block text-sm font-semibold text-gray-700 mb-2">Color 1</label>
-            <input type="color" id="color1" value="#DC143C" class="w-full h-12 rounded-lg cursor-pointer">
-            <input type="text" id="color1-text" value="#DC143C" class="w-full mt-2 px-3 py-2 border border-gray-300 rounded-lg font-mono text-sm">
+            <input type="color" id="color1" value="#4F46E5" class="w-full h-12 rounded-lg cursor-pointer">
+            <input type="text" id="color1-text" value="#4F46E5" class="w-full mt-2 px-3 py-2 border border-gray-300 rounded-lg font-mono text-sm">
           </div>
           <div>
             <label class="block text-sm font-semibold text-gray-700 mb-2">Color 2</label>
-            <input type="color" id="color2" value="#FFB347" class="w-full h-12 rounded-lg cursor-pointer">
-            <input type="text" id="color2-text" value="#FFB347" class="w-full mt-2 px-3 py-2 border border-gray-300 rounded-lg font-mono text-sm">
+            <input type="color" id="color2" value="#5EEAD4" class="w-full h-12 rounded-lg cursor-pointer">
+            <input type="text" id="color2-text" value="#5EEAD4" class="w-full mt-2 px-3 py-2 border border-gray-300 rounded-lg font-mono text-sm">
           </div>
           <div>
             <label class="block text-sm font-semibold text-gray-700 mb-2">Color 3</label>
-            <input type="color" id="color3" value="#A00021" class="w-full h-12 rounded-lg cursor-pointer">
-            <input type="text" id="color3-text" value="#A00021" class="w-full mt-2 px-3 py-2 border border-gray-300 rounded-lg font-mono text-sm">
+            <input type="color" id="color3" value="#312E81" class="w-full h-12 rounded-lg cursor-pointer">
+            <input type="text" id="color3-text" value="#312E81" class="w-full mt-2 px-3 py-2 border border-gray-300 rounded-lg font-mono text-sm">
           </div>
         </div>
         
         <div class="mt-6">
           <h3 class="text-lg font-semibold mb-3 text-gray-700">Preview</h3>
-          <div id="preview-box" class="h-32 rounded-xl bg-gradient-to-r from-[#DC143C] via-[#FFB347] to-[#A00021] mb-4"></div>
+          <div id="preview-box" class="h-32 rounded-xl bg-gradient-to-r from-[#4F46E5] via-[#5EEAD4] to-[#312E81] mb-4"></div>
           <div class="bg-gray-100 p-4 rounded-lg">
             <p class="text-sm font-mono text-gray-700">CSS Class:</p>
             <code id="css-output" class="text-xs text-gray-800 break-all">
-              bg-gradient-to-r from-[#DC143C] via-[#FFB347] to-[#A00021]
+              bg-gradient-to-r from-[#4F46E5] via-[#5EEAD4] to-[#312E81]
             </code>
           </div>
         </div>
@@ -108,26 +108,26 @@ import Layout from '../layouts/Layout.astro';
         <div class="bg-white rounded-xl shadow-lg p-6">
           <h3 class="text-lg font-semibold mb-4 text-gray-700">Button Styles</h3>
           <div class="flex flex-wrap gap-4">
-            <button class="bg-gradient-to-r from-[#FF8C00] to-[#FFB347] text-white px-6 py-3 rounded-xl font-semibold hover:from-[#FF7F00] hover:to-[#FFA500] transition-all shadow-md hover:shadow-lg transform hover:scale-105">
+            <button class="bg-gradient-to-r from-[#2DD4BF] to-[#5EEAD4] text-white px-6 py-3 rounded-xl font-semibold hover:from-[#14B8A6] hover:to-[#2DD4BF] transition-all shadow-md hover:shadow-lg transform hover:scale-105">
               Primary Button
             </button>
-            <button class="bg-[#DC143C] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#C41E3A] transition-all shadow-md">
-              Red Button
+            <button class="bg-[#4F46E5] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#4338CA] transition-all shadow-md">
+              Indigo Button
             </button>
-            <button class="bg-[#A00021] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#8B0018] transition-all shadow-md">
-              Dark Red Button
+            <button class="bg-[#312E81] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#1E1B4B] transition-all shadow-md">
+              Deep Indigo Button
             </button>
           </div>
         </div>
         
         <!-- Navbar Example -->
-        <div class="bg-gradient-to-r from-[#DC143C] via-[#C41E3A] to-[#DC143C] text-white rounded-xl shadow-lg p-6">
+        <div class="bg-gradient-to-r from-[#4F46E5] via-[#4338CA] to-[#4F46E5] text-white rounded-xl shadow-lg p-6">
           <h3 class="text-lg font-semibold mb-4">Navbar Style</h3>
           <div class="flex items-center justify-between">
             <div class="text-xl font-bold">Questra</div>
             <div class="flex gap-4">
-              <a href="#" class="hover:text-[#FFB347] transition-colors">Home</a>
-              <a href="#" class="hover:text-[#FFB347] transition-colors">About</a>
+              <a href="#" class="hover:text-[#5EEAD4] transition-colors">Home</a>
+              <a href="#" class="hover:text-[#5EEAD4] transition-colors">About</a>
             </div>
           </div>
         </div>
